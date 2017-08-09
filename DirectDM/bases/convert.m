@@ -163,9 +163,12 @@ CheckReal[val_] := FreeQ[FullForm[val],Complex];
 SetCoeffMstar["R"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,
 		odim,onum,scl,imgmsg},
 	tmp  = ToString[Head@coeff];
+	If[tmp==="Symbol", Print["The coefficient name should be followed by square \
+bracket even if no argument is necessary, e.g., Q6[] in the scalar case."];
+		Abort[]];
 	type = StringTake[tmp,1];
 	num  = ToExpression@StringDrop[tmp,1];
-	arg  = ToString[##]&@@coeff;
+	arg  = If[Length[{##}&@@coeff]>0,ToString[##]&@@coeff,Sequence[]];
 	scl  = MatchingScale[basis];
   (* ------------------------------------------------------------------------ * 
 	 * Use an associations to set the value of the coefficient
@@ -187,10 +190,9 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
-  If[num==0, num=arg; arg=Sequence[]];
-	If[FreeQ[FullForm[value],Complex] && ( MemberQ[{13,14},num] || num === "D" ),
-	  Print[imgmsg];Abort[]];
-		SetCoeff[basis, odim[num][onum[num],arg], oval[num]];
+	If[arg==Null,
+		SetCoeff[basis,odim[num][onum[num]],oval[num]],
+		SetCoeff[basis, odim[num][onum[num],arg], oval[num]]];
 ];
 
 

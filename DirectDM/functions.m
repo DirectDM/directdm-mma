@@ -6,10 +6,6 @@ BeginPackage["DirectDM`"];
 Begin["`Private`"]
 
 
-(* By default, the DM is an isospin singlet *)
-\[ScriptCapitalJ]\[Chi] = 0;
-
-
 (* By default, the DM is a Dirac fermion *)
 $DMType= "D";
 
@@ -73,7 +69,7 @@ TranslateMajorana[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff,dim
 	If[dim==5 || (dim==6 && MemberQ[{1,3},number]),
 		Print["The dipole operators and the vector current vanish for a Majoranan Fermion. \
 Please enter a valid operator."];Abort[]];
-	Return[{basis, coeff, 2*value}];
+	Return[{basis, coeff, value}];
 ]
 
 
@@ -100,7 +96,11 @@ TranslateReal[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff,dim},
 	(* ------------------------------------------------------------------------ * 
 	 *  The input has already been validated so no need to check again
  	 * ------------------------------------------------------------------------ *)
-	Return[{basis, coeff, 2*value}];
+	If[Length[tmp]==2, {number, flavor} = tmp, {number} = tmp];
+	trcoeff = Switch[number,
+		3, Q7[5,flavor], 5, Q7[1],
+		4, Q7[7,flavor], 6, Q7[3]];
+	Return[{basis, trcoeff, value}];
 ]
 
 
@@ -159,9 +159,12 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 	If[!ChkOpInd, Print[MsgOpInd]; Abort[]];
   (* ------------------------------------------------------------------------ *
 	 *  If all is good, check the flavor index
+	 *  Warning: needs to be augmented to check if the operator takes a flavor
+	 * 					 index
  	 * ------------------------------------------------------------------------ *)
-	ChkOpFlv = MemberQ[flavors[NumFlavors[basis]], f];
-	If[!ChkOpFlv, Print[MsgOpFlv]; Abort[]];
+	ChkOpFlv = True;
+	If[Length[tmp02]>=3,ChkOpFlv = MemberQ[flavors[NumFlavors[basis]], f];
+	If[!ChkOpFlv, Print[MsgOpFlv]; Abort[]];];
 ]
 
 
@@ -192,21 +195,38 @@ NumFlavors[basis_] := Switch[basis, "5Flavor", 5, "4Flavor", 4, "3Flavor", 3];
 CoeffsList[basis_] := If[StringMatchQ[basis,{"NR_p","NR_n"}], CoeffsListInt[basis],
 	Switch[$DMType,
 		"D", CoeffsListInt[basis],
-		"M", CoeffsListInt[basis],
+		"M", 	Join[
+			Flatten@Table[GetCoeff[basis, Q6[i,f]],
+				{i,{2,4}}, {f, flavors[NumFlavors[basis]]}], 
+			Table[GetCoeff[basis, Q7[i]], {i,1,4}],
+			Flatten@Table[GetCoeff[basis, Q7[i,f]],
+				{i,5,8}, {f, flavors[NumFlavors[basis]]}]
+		],
 		"C", 	Join[
-			Flatten@Table[GetCoeff[basis,#2]&@@TranslateComplex[basis, Q6[i,f], 1],
+			Flatten@Table[GetCoeff[basis, Q6[i,f]],
 				{i,1,4}, {f, flavors[NumFlavors[basis]]}], 
-			Table[GetCoeff[basis,#2]&@@TranslateComplex[basis, Q6[i], 1], {i,5,6}],
+			Table[GetCoeff[basis, Q6[i]], {i,5,6}],
+			{0,0}
+		],
+		"R", 	Join[
+			Flatten@Table[GetCoeff[basis, Q6[i,f]],
+				{i,3,4}, {f, flavors[NumFlavors[basis]]}], 
+			Table[GetCoeff[basis, Q6[i]], {i,5,6}],
 			{0,0}
 		]
 	]
 ];
 
 
-GetCoeff[basis_,coeff_]:= Module[{tmp},
+GetCoeff[basis_,coeff_]:= Module[{tmp,tmpcoeff},
 	If[basis === "NR_p" || basis === "NR_n",
 	Return[CoeffsListInt[basis][[coeff]]],
-	tmp = (Head[#][basis]@(#/.Head[#]->Sequence)) &@ coeff;
+	ValidateCoeff[basis,coeff];
+	tmpcoeff = Switch[$DMType,"D",coeff,
+		"M",TranslateMajorana[basis,coeff,1][[2]],
+		"C",TranslateComplex[basis,coeff,1][[2]],
+		"R",TranslateReal[basis,coeff,1][[2]]];
+	tmp = (Head[#][basis]@(#/.Head[#]->Sequence)) &@ tmpcoeff;
 	Return[CoeffsListInt[basis][[tmp]]]]
 ]
 
@@ -214,19 +234,6 @@ GetCoeff[basis_,coeff_]:= Module[{tmp},
 ResetBasis[basis_] := Module[{},
   CoeffsListInt[basis] = ConstantArray[0,BasisDim[basis]];
 ]
-
-
-(* ------------------------------------------------------------------ *
- *  Matching correction due to EW gauge interactions
- * ------------------------------------------------------------------ *)
-f[mx_, mw_: 80.385] := 
- Module[{xi}, xi = mw^2/mx^2; 
-  Sqrt[xi]/2 (4 + (2 (-4 + xi^2) ArcTanh[Sqrt[(-4 + xi)/xi]])/ \
-     Sqrt[(-4 + xi) xi] - 2 xi Log[xi] +  \
-     Sqrt[(-4 + xi) xi] Log[1/2 (-2 + xi + Sqrt[(-4 + xi) xi])])]
-
-\[Delta]C75 = (Sqrt[4 \[Pi]*\[Alpha]emMZ] \[Alpha]emMZ)/(
-  2 \[Pi]*sw^3 \[Lambda]*vev^3) \[ScriptCapitalJ]\[Chi]*f[MX];
 
 
 BasisID/:BasisID["NR"] 			= 0;
@@ -239,7 +246,7 @@ Options[ComputeCoeffs] = {Running->True};
 
 
 ComputeCoeffs[basi_, basf_, OptionsPattern[]] := Module[
-	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf},
+	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult},
 	runtf = OptionValue[Running];
 	bi = BasisID[basi];
 	bf = BasisID[basf];
@@ -252,11 +259,6 @@ from a high to a low scale at the moment."]; Abort[];];
 	RMat[BasisID["3Flavor"]] = IdentityMatrix[BasisDim["3Flavor"]];
 	RMat[BasisID["4Flavor"]] = RTMP[4, "MB",   "2GeV"];
 	RMat[BasisID["5Flavor"]] = RTMP[5, "MZ",   "MB" ];
-	If[ bi==9 && \[ScriptCapitalJ]\[Chi] != 0,
-		Do[c75tmp = GetCoeff["5Flavor", Q7[5,fl]];
-			SetCoeff["5Flavor",Q7[5,fl], c75tmp + \[Delta]C75];,
-			{fl,flavors[5][[;;5]]}]
-	];
   (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
 	Switch[ bi+bf,
 		18, UMat = If[runtf, RMat[9], IdentityMatrix[BasisDim["5Flavor"]]],
@@ -277,15 +279,16 @@ are the NR EFT basis.\nThere is nothing to do. The evolution matrix is the Ident
   (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
 	If[ bf != 0,
 		CoeffsListInt[basf] = UMat.CoeffsListInt[basi];,
-		(* -------------------------------------------------- *)
-		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.CoeffsListInt[basi];
-		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.CoeffsListInt[basi];
+		(* ---------------------------------------------------------------------- * 
+		 *  Multiply the Wilson coefficients by 2 if DM is a real scalar or
+		 *  a Majorana fermion
+		 * ---------------------------------------------------------------------- *)
+		mult = If[MemberQ[{"R","M"},$DMType],2,1];
+		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.(mult*CoeffsListInt[basi]);
+		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.(mult*CoeffsListInt[basi]);
 	];
 ]
 
-
-
-SetIChi[IX_] := Module[{}, \[ScriptCapitalJ]\[Chi] = IX(IX+1) ];
 
 
 (* -------------------------------------------------------------------------- *
