@@ -17,8 +17,8 @@ MatchingScale[basis_]:=Switch[basis,"5Flavor","MZ","4Flavor","MB","3Flavor","2Ge
 
 
 DMTypeString[type_] := 
- Switch[type, "D", "Dirac Fermion", "M", "Majorana Fermion", "C", "'Complex Scalar'", 
-  "R", "Real Scalar'"];
+ Switch[type, "D", "Dirac Fermion", "M", "Majorana Fermion", "C", "Complex Scalar", 
+  "R", "Real Scalar"];
 
 
 SetDMType[type_]:=Module[{},

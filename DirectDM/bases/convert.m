@@ -9,6 +9,9 @@ Begin["`Private`"]
 TypeName[type_]:=Switch[type,"D","Dirac","C","Complex Scalar","M","Majorana","R","Real Scalar"]
 
 
+CheckReal[val_] := FreeQ[FullForm[val],Complex];
+
+
 SetCoeffMstar[basis_,coeff_,value_] := SetCoeffMstar[$DMType][basis, coeff, value];
 
 
@@ -43,14 +46,14 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input must be imaginary else the cross-section can be negative!\
-\nThe Operator \[Times] Coefficient for D, D13, and D14 are not Hermitian.";
+\nThe Operator \[Times] Coefficient for D, D13, and D14 are not Hermitian. \
+See Appendix B in 1708.XXXXX.";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
+	If[!CheckReal[oval[num]],Print[imgmsg];Abort[]];
   If[num==0, num=arg; arg=Sequence[]];
-	If[FreeQ[FullForm[value],Complex] && ( MemberQ[{13,14},num] || num === "D" ),
-	  Print[imgmsg];Abort[]];
-		SetCoeff[basis, odim[num][onum[num],arg], oval[num]];
+	SetCoeff[basis, odim[num][onum[num],arg], oval[num]];
 ];
 
 
@@ -81,14 +84,14 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input must be imaginary else the cross-section can be negative!\
-\nThe Operator \[Times] Coefficient for M9 and M10 are not Hermitian.";
+\nThe Operator \[Times] Coefficient for M9 and M10 are not Hermitian. \
+See Appendix B in 1708.XXXXX.";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
+	If[!CheckReal[oval[num]],Print[imgmsg];Abort[]];
   If[num==0, num=arg; arg=Sequence[]];
-	If[FreeQ[FullForm[value],Complex] && ( MemberQ[{13,14},num] || num === "D" ),
-	  Print[imgmsg];Abort[]];
-		SetCoeff[basis, odim[num][onum[num],arg], oval[num]];
+	SetCoeff[basis, odim[num][onum[num],arg], oval[num]];
 ];
 
 
@@ -111,7 +114,7 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input does not result in real Wilson coefficents. \
-The cross-section can be negative!";
+The cross-section can be negative! See Appendix B in 1708.XXXXX.";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
@@ -157,9 +160,6 @@ The cross-section can be negative!";
 ];
 
 
-CheckReal[val_] := FreeQ[FullForm[val],Complex];
-
-
 SetCoeffMstar["R"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,
 		odim,onum,scl,imgmsg},
 	tmp  = ToString[Head@coeff];
@@ -185,11 +185,12 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 	If[!StringMatchQ[type,dmtypes],
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
-	imgmsg = "The input must be imaginary else the cross-section can be negative!\
-\nThe Operator \[Times] Coefficient for M9 and M10 are not Hermitian.";
+	imgmsg = "The input does not result in real Wilson coefficents. \
+The cross-section can be negative! See Appendix B in 1708.XXXXX.";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
+	If[!CheckReal[oval[num]],Print[imgmsg];Abort[]];
 	If[arg==Null,
 		SetCoeff[basis,odim[num][onum[num]],oval[num]],
 		SetCoeff[basis, odim[num][onum[num],arg], oval[num]]];
