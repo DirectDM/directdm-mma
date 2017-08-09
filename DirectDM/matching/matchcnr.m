@@ -6,12 +6,20 @@ BeginPackage["DirectDM`"];
 Begin["`Private`"]
 
 
+(* ----------------------------------------------------------------- *
+ *  Dirac fermion
+ * ----------------------------------------------------------------- *)
 CNRMAT/:CNRMAT["D","p"]=CNRMATp;
 CNRMAT/:CNRMAT["D","n"]=CNRMATn;
-
-
 CNRMATp=ConstantArray[0,{15,BasisDim["3Flavor"]}];
 CNRMATn=ConstantArray[0,{15,BasisDim["3Flavor"]}];
+
+
+(* ----------------------------------------------------------------- *
+ *  Majorana fermion
+ * ----------------------------------------------------------------- *)
+CNRMAT/:CNRMAT["M","p"]=CNRMATpM;
+CNRMAT/:CNRMAT["M","n"]=CNRMATnM;
 
 
 (* ------------------------------------------------------------------ *
@@ -259,6 +267,14 @@ Block[{cnr,tmp}, cnr = 12;
 	CNRMATn[[cnr,Q73[10,"s"]]] = - 8 * FT0["s","n"]; 
 	(* --------------------------------------------------------------- *)
 ]
+
+
+(* ----------------------------------------------------------------- *
+ *  Majorana fermion: copy matrix of complex scalar since coefficients
+ *  	are already set correctly
+ * ----------------------------------------------------------------- *)
+CNRMATpM = CNRMATp;
+CNRMATnM = CNRMATn;
 
 
 End[]

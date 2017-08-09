@@ -14,15 +14,15 @@ Begin["`Private`"]
 $DMType= "D";
 
 
-dmtypes = {"D","M","S","C"};
+dmtypes = {"D","M","C","R"};
 
 
 MatchingScale[basis_]:=Switch[basis,"5Flavor","MZ","4Flavor","MB","3Flavor","2GeV"];
 
 
 DMTypeString[type_] := 
- Switch[type, "D", "Dirac", "M", "Majorana", "C", "'Complex Scalar'", 
-  "S", "'Real Scalar'"];
+ Switch[type, "D", "Dirac Fermion", "M", "Majorana Fermion", "C", "'Complex Scalar'", 
+  "R", "Real Scalar'"];
 
 
 SetDMType[type_]:=Module[{},
@@ -90,6 +90,20 @@ TranslateComplex[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff},
 ]
 
 
+(* -------------------------------------------------------------------------- * 
+ *  Translate the real scalar basis to the complex scalar DM basis            * 
+ * -------------------------------------------------------------------------- *)
+TranslateReal[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff,dim},
+	dim = ToExpression@StringDrop[ToString@Head[coeff],1];
+	tmp = # /. Head[#] -> List &@ coeff;
+	If[Length[tmp]==2, {number, flavor} = tmp, {number} = tmp];
+	(* ------------------------------------------------------------------------ * 
+	 *  The input has already been validated so no need to check again
+ 	 * ------------------------------------------------------------------------ *)
+	Return[{basis, coeff, 2*value}];
+]
+
+
 ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 	ChkOpDim,ChkOpInd,ChkOpNam,MsgOpNam,MsgOpInd,MsgOpDim},
 	MsgOpNam = "The operator name is not valid.";
@@ -135,7 +149,7 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 		_, ChkOpDim = False;]
 	];
 	If[$DMType === "R", ChkOpInd = Switch[d,
-		6, MemberQ[Range[1,4],i],
+		6, MemberQ[Range[3,6],i],
 		_, ChkOpDim = False;]
 	];
   (* ------------------------------------------------------------------------ *
@@ -156,7 +170,8 @@ SetCoeff[basis_,coeff_,value_] := Module[{tmp1},
 	Switch[$DMType, 
 		"D", SetCoeffInt[basis,coeff,value],
 		"C", SetCoeffInt[##]&@@TranslateComplex[basis,coeff,value],
-		"M", SetCoeffInt[##]&@@TranslateMajorana[basis,coeff,value]
+		"M", SetCoeffInt[##]&@@TranslateMajorana[basis,coeff,value],
+		"R", SetCoeffInt[##]&@@TranslateReal[basis,coeff,value]
 	];
 ];
 

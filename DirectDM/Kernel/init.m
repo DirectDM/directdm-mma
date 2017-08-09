@@ -19,7 +19,7 @@ Get["DirectDM`bases`convert`"];
 Get["DirectDM`matching`match45`"];
 Get["DirectDM`matching`match34`"];
 Get["DirectDM`matching`matchcnr`"];
-Get["DirectDM`matching`matchcnrComplexScalar`"];
+Get["DirectDM`matching`matchcnrScalar`"];
 
 
 (* Running *)

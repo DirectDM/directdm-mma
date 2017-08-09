@@ -6,12 +6,20 @@ BeginPackage["DirectDM`"];
 Begin["`Private`"]
 
 
+(* ----------------------------------------------------------------- *
+ *  Complex scalar                                                   *
+ * ----------------------------------------------------------------- *)
 CNRMAT/:CNRMAT["C","p"]=CNRMATpC;
 CNRMAT/:CNRMAT["C","n"]=CNRMATnC;
-
-
 CNRMATpC=ConstantArray[0,{15,BasisDim["3Flavor"]}];
 CNRMATnC=ConstantArray[0,{15,BasisDim["3Flavor"]}];
+
+
+(* ----------------------------------------------------------------- *
+ *  Real scalar                                                   *
+ * ----------------------------------------------------------------- *)
+CNRMAT/:CNRMAT["R","p"]=CNRMATpR;
+CNRMAT/:CNRMAT["R","n"]=CNRMATnR;
 
 
 (* ----------------------------------------------------------------- *
@@ -59,6 +67,14 @@ Block[{cnr,tmpp,tmpn}, cnr = 10;
 	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q73[3];
 	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q73[3];
 ]
+
+
+(* ----------------------------------------------------------------- *
+ *  Real scalar: copy matrix of complex scalar since coefficients
+ *    are already set correctly
+ * ----------------------------------------------------------------- *)
+CNRMATpR = CNRMATpC;
+CNRMATnR = CNRMATnC;
 
 
 End[]

@@ -32,7 +32,7 @@ corresponding to the proton or neutron Wilson coefficients."
 
 SetDMType::usage="SetDMType[\"type\"] sets the DM to one of the following \
 types:\n\
-\t\"D\" = Dirac,\n\t\"M\" = Majorana,\n\t\"C\" = complex scalar,\n\t\"S\" = real scalar."
+\t\"D\" = Dirac,\n\t\"M\" = Majorana,\n\t\"C\" = complex scalar,\n\t\"R\" = real scalar."
 
 
 SetCoeff::usage="SetCoef[\"basis\",coefficient,value]"

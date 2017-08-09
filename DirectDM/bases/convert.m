@@ -12,7 +12,8 @@ TypeName[type_]:=Switch[type,"D","Dirac","C","Complex Scalar","M","Majorana","R"
 SetCoeffMstar[basis_,coeff_,value_] := SetCoeffMstar[$DMType][basis, coeff, value];
 
 
-SetCoeffMstar["D"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,scl,imgmsg},
+SetCoeffMstar["D"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,
+		odim,onum,scl,imgmsg},
 	tmp  = ToString[Head@coeff];
 	type = StringTake[tmp,1];
 	num  = ToExpression@StringDrop[tmp,1];
@@ -53,7 +54,8 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 ];
 
 
-SetCoeffMstar["M"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,scl,imgmsg},
+SetCoeffMstar["M"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,
+		odim,onum,scl,imgmsg},
 	tmp  = ToString[Head@coeff];
 	type = StringTake[tmp,1];
 	num  = ToExpression@StringDrop[tmp,1];
@@ -90,11 +92,76 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 ];
 
 
-SetCoeffMstar["C"][basis_,coeff_,value_] := Print["The conversion from the complex scalar \
-basis of Goodman et al. [1009.0008] is not yet implemented."];
+SetCoeffMstar["C"][basis_,coeff_,value_] := Module[
+	{type,num,tmp,arg,vali,valf,val0,dcof,scl,imgmsg},
+	tmp  = ToString[Head@coeff];
+	If[tmp==="Symbol", Print["The coefficient name should be followed by square \
+bracket even if no argument is necessary, e.g., Q6[] in the scalar case."];
+		Abort[]];
+	type = StringTake[tmp,1];
+	num  = ToExpression@StringDrop[tmp,1];
+	arg  = If[Length[{##}&@@coeff]>0,ToString[##]&@@coeff,Sequence[]];
+	scl  = MatchingScale[basis];
+  (* ------------------------------------------------------------------------ * 
+   *  Do some error checking: correct $DMType, operator name and number
+   * ------------------------------------------------------------------------ *)
+	If[$DMType=!=type,Print["Please make sure to SetDMType to \""<>type<>"\" before setting\
+coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
+	If[!StringMatchQ[type,dmtypes],
+		Print["Please input a valid operator name."];Return[]];
+	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
+	imgmsg = "The input does not result in real Wilson coefficents. \
+The cross-section can be negative!";
+  (* ------------------------------------------------------------------------ * 
+   *  Call SetCoeff
+   * ------------------------------------------------------------------------ *)
+	Switch[tmp,
+  (* ------------------------------------------------------------------------ *
+	 *  This case is more tricky because of the multiple matchings
+   * ------------------------------------------------------------------------ *)
+		"C1",
+			val0 = 1/value^2;
+			If[CheckReal[val0], SetCoeff[basis, Q6[3,arg], val0],
+				Print[imgmsg]; Abort[]],
+		"C2",
+			vali = GetCoeff[basis, Q6[4,arg]];
+			val0 = 1/value^2;
+			If[CheckReal[vali+val0], SetCoeff[basis, Q6[4,arg], vali+val0],
+				Print[imgmsg]; Abort[]],
+		"C3",
+			val0 = -I/2/value^2;
+			If[CheckReal[val0], SetCoeff[basis, Q6[3,arg], val0],
+				Print[imgmsg]; Abort[]],
+		"C4", (* for this, we need to set three Wilson coefficients *)
+			val0 = -I/2/value^2;
+			If[CheckReal[val0], SetCoeff[basis, Q6[2,arg], val0],
+				Print[imgmsg]; Abort[]];
+			vali = GetCoeff[basis, Q6[4,arg]];
+			val0 = -1/value^2;
+			If[CheckReal[vali+val0], SetCoeff[basis, Q6[4,arg], vali+val0],
+				Print[imgmsg]; Abort[]];
+			vali = GetCoeff[basis, Q6[6]];
+			val0 = 1/value^2;
+			If[CheckReal[vali+val0], SetCoeff[basis, Q6[6], vali+val0],
+				Print[imgmsg]; Abort[]],
+		"C5", 
+			val0 = 3*\[Pi]/value^2;
+			If[CheckReal[val0], SetCoeff[basis, Q6[5], val0],
+				Print[imgmsg]; Abort[]],
+		"Q6",
+			vali = GetCoeff[basis, Q6[6]];
+			val0 = 2*\[Pi]*I/value^2;
+			If[CheckReal[vali+val0], SetCoeff[basis, Q6[6], vali+val0],
+				Print[imgmsg]; Abort[]]
+	];
+];
 
 
-SetCoeffMstar["R"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,scl,imgmsg},
+CheckReal[val_] := FreeQ[FullForm[val],Complex];
+
+
+SetCoeffMstar["R"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,
+		odim,onum,scl,imgmsg},
 	tmp  = ToString[Head@coeff];
 	type = StringTake[tmp,1];
 	num  = ToExpression@StringDrop[tmp,1];
@@ -105,7 +172,7 @@ SetCoeffMstar["R"][basis_,coeff_,value_] := Module[{type,num,tmp,arg,oval,scl,im
    * ------------------------------------------------------------------------ *)
 	odim= <| 1->Q6, 2->Q6, 3->Q6, 4->Q6 |>;
 	onum= <| 1->3,  2->4,  3->5,  4->6  |>;
-	oval=<|  1-> 1/value^2, 3->   3*\[Pi]/value^2,
+	oval= <| 1-> 1/value^2, 3->   3*\[Pi]/value^2,
            2-> 1/value^2, 4-> I*2*\[Pi]/value^2 |>;
   (* ------------------------------------------------------------------------ * 
    *  Do some error checking: correct $DMType, operator name and number
