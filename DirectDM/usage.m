@@ -7,7 +7,7 @@ Print["By: Fady Bishara, Joachim Brod, Ben Grinstein, and Jure Zupan; \
 Please cite ",
 Hyperlink["[1611.00368]","https://inspirehep.net/record/1495512"],", ",
 Hyperlink["[1707.06998]","https://inspirehep.net/record/1611242"],", and ",
-Hyperlink["[1706.xxxxx]",""],"."];
+Hyperlink["[1708.02678]","https://inspirehep.net/record/1615183"],"."];
 Print["\nAvailable functions are: SetDMType, SetCoeff, SetCoeffMstar, GetCoeff, CoeffsList, ComputeCoeffs, \
 and ResetBasis.\n\
 Implemented bases are: \"5Flavor\", \"4Flavor\", \"3Flavor\", and \"NR\".\n\n\
@@ -38,7 +38,7 @@ types:\n\
 SetCoeff::usage="SetCoef[\"basis\",coefficient,value]"
 
 
-SetCoeffMstar::usage = "Set the coefficient in the basis of [1009.0008] -- see [1708.XXXXX] for details."
+SetCoeffMstar::usage = "Set the coefficient in the basis of [1009.0008] -- see Appendix B of [1708.02678] for details."
 
 
 GetCoeff::usage="SetCoef[\"basis\",coefficient] returns the value of the \

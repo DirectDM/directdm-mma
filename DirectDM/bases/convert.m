@@ -85,7 +85,7 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input must be imaginary else the cross-section can be negative!\
 \nThe Operator \[Times] Coefficient for M9 and M10 are not Hermitian. \
-See Appendix B in 1708.XXXXX.";
+See Appendix B in [1708.02678].";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
@@ -114,7 +114,7 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input does not result in real Wilson coefficents. \
-The cross-section can be negative! See Appendix B in 1708.XXXXX.";
+The cross-section can be negative! See Appendix B in [1708.02678].";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
@@ -186,7 +186,7 @@ coefficients in the "<>TypeName[type]<>" basis."];Abort[]];
 		Print["Please input a valid operator name."];Return[]];
 	If[!NumericQ[num],Print["Please input a valid operator number."];Return[]];
 	imgmsg = "The input does not result in real Wilson coefficents. \
-The cross-section can be negative! See Appendix B in 1708.XXXXX.";
+The cross-section can be negative! See Appendix B in [1708.02678].";
   (* ------------------------------------------------------------------------ * 
    *  Call SetCoeff
    * ------------------------------------------------------------------------ *)
