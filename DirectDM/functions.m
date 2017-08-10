@@ -23,7 +23,7 @@ DMTypeString[type_] :=
 
 SetDMType[type_]:=Module[{},
 	If[! StringMatchQ[type, dmtypes],
-		Print["Input is not valid. Choices are \"D\", \"M\", \"C\", and \"S\"."];Return[],
+		Print["Input is not valid. Choices are \"D\", \"M\", \"C\", and \"R\"."];Return[],
 		$DMType=type; Print["Set DM type to " <> DMTypeString[type]]
 	];
 ];

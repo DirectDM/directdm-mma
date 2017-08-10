@@ -42,7 +42,7 @@ If you use `DirectDM` please cite us! To get the `BibTeX` entries, click on: [in
 
 ## Contributors
 
-   * Fady Bishara (Univeristy of Oxford)
+   * Fady Bishara (University of Oxford)
    * Joachim Brod (TU Dortmund)
    * Jure Zupan (University of Cincinnati)
    * Benjamin Grinstein (UC San Diego)
