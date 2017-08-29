@@ -7,7 +7,7 @@ You can get the latest version of `DirectDM` on [`github`](https://directdm.gith
 
 ## Usage
 
-The include `example.m` files has basic examples for using the functions provided by the code. 
+The included `example.m` file has basic examples for using the functions provided by the code. 
 
 Here is a simple example assuming that the notebook or `.m` file are in same directory as `./DirectDM/`.
 
