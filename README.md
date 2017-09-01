@@ -24,7 +24,7 @@ Do[SetCoeff["3Flavor", Q6[1,f], 1/100^2], {f,{"u","d"}}]
 SetCoeff["3Flavor", Q7[1], 1/100^3]
 ```
 
-Match the 3 flavor Wilson coefficients onto the non-relativstic ones
+Match the 3 flavor Wilson coefficients onto the non-relativistic ones
 ```
 ComputeCoeffs["3Flavor","NR"]
 ```
