@@ -279,13 +279,8 @@ are the NR EFT basis.\nThere is nothing to do. The evolution matrix is the Ident
   (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
 	If[ bf != 0,
 		CoeffsListInt[basf] = UMat.CoeffsListInt[basi];,
-		(* ---------------------------------------------------------------------- * 
-		 *  Multiply the Wilson coefficients by 2 if DM is a real scalar or
-		 *  a Majorana fermion
-		 * ---------------------------------------------------------------------- *)
-		mult = If[MemberQ[{"R","M"},$DMType],2,1];
-		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.(mult*CoeffsListInt[basi]);
-		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.(mult*CoeffsListInt[basi]);
+		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.CoeffsListInt[basi];
+		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.CoeffsListInt[basi];
 	];
 ]
 
@@ -334,8 +329,7 @@ as2l[al0_, mu0_, muf_, nf_] :=
      al[Log[mu0]] == al0}, al, {logmu, Log[mu0], Log[muf]}];
 
 AlphaS["MB"]   = as1l[AlphaS["MZ"]  , MZ, MBatMBms, 5];
-AlphaS["3GeV"] = as1l[AlphaS["MB"]  , MBatMBms, 3, 4];
-AlphaS["2GeV"] = as1l[AlphaS["3GeV"], 3, 2, 3];
+AlphaS["2GeV"] = as1l[AlphaS["MB"]  , MBatMBms, 2, 4];
 
 
 End[]

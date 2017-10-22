@@ -18,7 +18,7 @@ RsQrkGlu[nf_, asmuh_, asmul_] := \
 
 
 R5sQrkGlu[nf_, asmuh_, asmul_] := \
-	MatrixExp[-(asmuh - asmul)/(4\[Pi])*{{0,-16},{0,0}}/(2*bet[0][nf]) ];
+	MatrixExp[-(asmuh - asmul)/(4\[Pi])*{{0,-8},{0,0}}/(2*bet[0][nf]) ];
 
 
 RsGluGlu[nf_, asmuh_, asmul_] := \
