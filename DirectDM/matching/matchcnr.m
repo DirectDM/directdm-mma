@@ -39,7 +39,7 @@ Block[{cnr}, cnr = 1;
 	CNRMATp[[cnr,Q73[5,"s"]]] = \[Sigma]s;
 	CNRMATn[[cnr,Q73[5,"s"]]] = \[Sigma]s;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[1]]] = -\[Alpha]emMTau / (2 \[Pi] MX);
+	CNRMATp[[cnr,Q53[1]]] = -\[Alpha]emQ0 / (2 \[Pi] MX);
 	CNRMATn[[cnr,Q53[1]]] = 0 (* since Qn = 0 *);
 	(* --------------------------------------------------------------- *)
 ]
@@ -59,8 +59,8 @@ Block[{cnr}, cnr = 4;
 	CNRMATp[[cnr,Q63[4,"s"]]] = - 4 \[CapitalDelta]s;
 	CNRMATn[[cnr,Q63[4,"s"]]] = - 4 \[CapitalDelta]s;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[1]]] = - 2 \[Alpha]emMTau / \[Pi] * \[Mu]p / MN;
-	CNRMATn[[cnr,Q53[1]]] = - 2 \[Alpha]emMTau / \[Pi] * \[Mu]n / MN;
+	CNRMATp[[cnr,Q53[1]]] = - 2 \[Alpha]emQ0 / \[Pi] * \[Mu]p / MN;
+	CNRMATn[[cnr,Q53[1]]] = - 2 \[Alpha]emQ0 / \[Pi] * \[Mu]n / MN;
 	(* --------------------------------------------------------------- * 
 	 *  Matching the tensor operators
 	 * --------------------------------------------------------------- *)
@@ -80,7 +80,7 @@ Block[{cnr}, cnr = 4;
  * ------------------------------------------------------------------ *)
 Block[{cnr}, cnr = 5;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[1]]] = 2 \[Alpha]emMTau MN / ( \[Pi] * qsq );
+	CNRMATp[[cnr,Q53[1]]] = 2 \[Alpha]emQ0 MN / ( \[Pi] * qsq );
 	CNRMATn[[cnr,Q53[1]]] = 0 (* since Qn = 0 *);
 	(* --------------------------------------------------------------- *)
 ]
@@ -91,8 +91,8 @@ Block[{cnr}, cnr = 5;
  * ------------------------------------------------------------------ *)
 Block[{cnr,tmp,tmpp,tmpn}, cnr = 6;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[1]]] = MN^2(2 \[Alpha]emMTau / ( \[Pi] * qsq ) \[Mu]p/MN);
-	CNRMATn[[cnr,Q53[1]]] = MN^2(2 \[Alpha]emMTau / ( \[Pi] * qsq ) \[Mu]n/MN);
+	CNRMATp[[cnr,Q53[1]]] = MN^2(2 \[Alpha]emQ0 / ( \[Pi] * qsq ) \[Mu]p/MN);
+	CNRMATn[[cnr,Q53[1]]] = MN^2(2 \[Alpha]emQ0 / ( \[Pi] * qsq ) \[Mu]n/MN);
 	(* --------------------------------------------------------------- *)
 	tmpp = MN^2 * 2/3(\[CapitalDelta]up+\[CapitalDelta]dp-2\[CapitalDelta]s)/(m\[Eta]^2+qsq);
 	tmpn = MN^2 * 2/3(\[CapitalDelta]dn+\[CapitalDelta]un-2\[CapitalDelta]s)/(m\[Eta]^2+qsq);
@@ -237,7 +237,7 @@ Block[{cnr,tmp}, cnr = 11;
 	CNRMATp[[cnr,Q73[2]]] = 2 tmp * mG / 27;
 	CNRMATn[[cnr,Q73[2]]] = 2 tmp * mG / 27;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[2]]] = 2 tmp * \[Alpha]emMTau MX/ (\[Pi] qsq);
+	CNRMATp[[cnr,Q53[2]]] = 2 tmp * \[Alpha]emQ0 MX/ (\[Pi] qsq);
 	CNRMATn[[cnr,Q53[2]]] = 0 (* since Qn = 0 *);
 	(* --------------------------------------------------------------- * 
 	 *  Matching the tensor operators
