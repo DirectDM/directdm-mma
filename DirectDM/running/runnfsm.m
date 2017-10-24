@@ -106,8 +106,8 @@ RTMP[nf_, muh_, mul_] := Module[{dim,mat,bas,qrk,lep,asmuh,asmul,tmp1,tmp2},
 	Do[ mat[[ Q7[bas][i,f], Q7[bas][i,f] ]] = tmp2[[1,1]], \
 		{i,7,8}, {f,flavors[nf]} ];
 	Do[ \
-		mat[[ Q7[bas][7,f], Q7[bas][3] ]] = -tmp2[[1,2]];\
-		mat[[ Q7[bas][8,f], Q7[bas][4] ]] = +tmp2[[1,2]];\
+		mat[[ Q7[bas][7,f], Q7[bas][3] ]] = tmp2[[1,2]];\
+		mat[[ Q7[bas][8,f], Q7[bas][4] ]] = tmp2[[1,2]];\
 		, {f,qrk} ];
 	(* ------------------------------------------------- *)
 	Return[mat];
