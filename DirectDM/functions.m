@@ -242,12 +242,15 @@ BasisID/:BasisID["4Flavor"] = 6;
 BasisID/:BasisID["5Flavor"] = 9;
 
 
-Options[ComputeCoeffs] = {Running->True};
+(* By default, matching at LO in q^2 expansion *)
+Options[ComputeCoeffs] = {Running->True, NLO->False};
 
 
 ComputeCoeffs[basi_, basf_, OptionsPattern[]] := Module[
-	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult},
+	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult, NLORep},
 	runtf = OptionValue[Running];
+  (* Make a replacement list to turn off/on the NLO option for NR basis *)
+  NLORep=Switch[OptionValue[NLO],False,{$NLO->0},True,{$NLO->1}];
 	bi = BasisID[basi];
 	bf = BasisID[basf];
   (* ------------------------------------------------------------------------ *)
@@ -279,8 +282,8 @@ are the NR EFT basis.\nThere is nothing to do. The evolution matrix is the Ident
   (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
 	If[ bf != 0,
 		CoeffsListInt[basf] = UMat.CoeffsListInt[basi];,
-		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.CoeffsListInt[basi];
-		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.CoeffsListInt[basi];
+		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.CoeffsListInt[basi]/.NLORep;
+		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.CoeffsListInt[basi]/.NLORep;
 	];
 ]
 

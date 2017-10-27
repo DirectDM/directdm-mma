@@ -10,20 +10,28 @@ Begin["`Private`"]
 (* -------------------------------------------------------------------------- * 
  *  Low energy constants -- see [1708.02678]
  * -------------------------------------------------------------------------- *)
+(* ===== Vector current ===== *)
+\[Mu]p = 2.793; \[Mu]n = -1.913; \[Mu]s = -0.064;
+(* ---- 
+\[Mu]hatup = \[Mu]hatdn = + 1.84;
+\[Mu]hatdp = \[Mu]hatun = - 1.03;
+   ----  *)
+(* ===== Axial current ===== *)
 gA = 1.2723; 
-\[CapitalDelta]up = \[CapitalDelta]dn = (0.521 + gA)/2; (* [1707.06998] Eq. (A17) *)
-\[CapitalDelta]dp = \[CapitalDelta]un = (0.521 - gA)/2; (* [1707.06998] Eq. (A17) *)
+\[CapitalDelta]u = Round[(0.521 + gA)/2,0.001]; (* [1707.06998] Eq. (A17) *)
+\[CapitalDelta]d = Round[(0.521 - gA)/2,0.001]; (* [1707.06998] Eq. (A17) *)
+\[CapitalDelta]up = \[CapitalDelta]dn = \[CapitalDelta]u;
+\[CapitalDelta]dp = \[CapitalDelta]un = \[CapitalDelta]d;
 \[CapitalDelta]s = -0.031;
-\[Mu]p = 2.793; \[Mu]n = -1.913; \[Mu]s = -0.073;
 B0mu = 6100*^-6   (* GeV^2 *);
 B0md = 13300*^-6  (* GeV^2 *);
 B0ms = 0.268      (* GeV^2 *);
-\[Sigma]pu = 17*^-3 (* GeV *); \[Sigma]nu = 15*^-3 (* GeV *);
-\[Sigma]pd = 32*^-3 (* GeV *); \[Sigma]nd = 36*^-3 (* GeV *);
-\[Sigma]s = 41.3*^-3 (* GeV *);
+\[Sigma]["u","p"] = 17*^-3 (* GeV *);
+\[Sigma]["u","n"] = 15*^-3 (* GeV *);
+\[Sigma]["d","p"] = 32*^-3 (* GeV *);
+\[Sigma]["d","n"] = 36*^-3 (* GeV *);
+\[Sigma]["s","p"] = \[Sigma]["s","n"] = 41.3*^-3 (* GeV *);
 mG = 848*^-3 (* GeV *);
-\[Mu]hatup = \[Mu]hatdn = + 1.84;
-\[Mu]hatdp = \[Mu]hatun = - 1.03;
 
 
 (* -------------------------------------------------------------------------- * 
@@ -59,17 +67,9 @@ gT["u"] = + 0.794;
 gT["d"] = - 0.204;
 gT["s"] = + 3.2*^-4;
 
-FT0["u","p"] = FT0["d","n"] = mu * gT["u"];
-FT0["d","p"] = FT0["u","n"] = md * gT["d"];
-FT0["s","p"] = FT0["s","n"] = ms * gT["s"];
-
 BT10["u","p"] = BT10["d","n"] = 3.0;
 BT10["d","p"] = BT10["u","n"] = 0.24;
 BT10["s","p"] = BT10["s","n"] = 0.0;
-
-FT1["u","p"] = FT1["d","n"] = - mu * BT10["u","p"];
-FT1["d","p"] = FT1["u","n"] = - md * BT10["d","p"];
-FT1["s","p"] = FT1["s","n"] = - ms * BT10["s","p"];
 
 
 
