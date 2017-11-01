@@ -7,7 +7,7 @@ You can get the latest version of `DirectDM` on [`github`](https://directdm.gith
 
 ## Usage
 
-The include `example.m` files has basic examples for using the functions provided by the code. 
+The included `example.m` file has basic examples for using the functions provided by the code. 
 
 Here is a simple example assuming that the notebook or `.m` file are in same directory as `./DirectDM/`.
 
@@ -24,7 +24,7 @@ Do[SetCoeff["3Flavor", Q6[1,f], 1/100^2], {f,{"u","d"}}]
 SetCoeff["3Flavor", Q7[1], 1/100^3]
 ```
 
-Match the 3 flavor Wilson coefficients onto the non-relativstic ones
+Match the 3 flavor Wilson coefficients onto the non-relativistic ones
 ```
 ComputeCoeffs["3Flavor","NR"]
 ```
