@@ -7,7 +7,13 @@ Begin["`Private`"]
 
 
 (* By default, the DM is a Dirac fermion *)
-$DMType= "D";
+$DMType = "D";
+$IX = 0;
+$YX = 0;
+$DX = 2*$IX + 1;
+$JX = $IX*($IX+1);
+(* By default, the DMEFT scale is 1 TeV *)
+$Lambda = 1*^3;
 
 
 dmtypes = {"D","M","C","R"};
@@ -28,6 +34,22 @@ SetDMType[type_]:=Module[{},
 	];
 ];
 
+SetDMHypercharge[hyp_]:=Module[{},
+	$YX = hyp;
+];
+
+SetDMIsospin[iso_]:=Module[{},
+	If[Mod[iso,0.5]!=0.,
+		Print["The DM weak isospin must be a integer multiple of 1/2"]; Abort[],
+		$IX = iso;
+		$DX = 2*iso+1;
+		$JX = iso*(iso+1);
+	];
+];
+
+
+SetScale[scale_]:=Module[{}, $Lambda = scale;];
+
 
 n/:n["u"]=0; n/:n["d"]=1; n/:n["s"]=2;
 
@@ -37,6 +59,11 @@ flavors = {"u","d","s","c","b","t"};
 
 
 quarks = {"u","d","s","c","b","t"};
+
+
+ui[gen_] := Switch[gen,1,"u",2,"c",3,"t"];
+di[gen_] := Switch[gen,1,"d",2,"s",3,"b"];
+li[gen_] := Switch[gen,1,"e",2,"mu",3,"tau"];
 
 
 flavors[nf_] := Switch[nf,\
@@ -333,6 +360,13 @@ as2l[al0_, mu0_, muf_, nf_] :=
 
 AlphaS["MB"]   = as1l[AlphaS["MZ"]  , MZ, MBatMBms, 5];
 AlphaS["2GeV"] = as1l[AlphaS["MB"]  , MBatMBms, 2, 4];
+
+(* -------------------------------------------------------------------------- *
+ *  The coefficients of the SU(2)_L and U(1)_Y beta functions.
+ *  References: 
+ * -------------------------------------------------------------------------- *)
+bet["g1",0] := -41.0/6.0-$YX^2/3.0*$DX;
+bet["g2",0] := +19.0/6.0-4.0/9.0*$JX*$DX;
 
 
 End[]

@@ -94,10 +94,13 @@ dFT1["s","p"] = dFT1["s","n"] = 0 * (- 2.0) (* GeV^-2 *);
  * -------------------------------------------------------------------------- *)
 \[Alpha]emQ0 = 1./137;  		(* PDG 2016 -- EW SM review *)
 \[Alpha]emMZ = 1./127.950;  (* PDG 2016 -- EW SM review *)
-MH           = 125     (* [GeV] *);
+MH           = 125.18  (* [GeV] *);
 MZ           = 91.1876 (* [GeV] *);
-vev          = 246     (* [GeV] *);
-sw           = Sqrt[0.23129] (* From PDG 2016; MSbar at MZ *);
+GF           = 1.1663787*^-5;
+vev          = 1/Sqrt[Sqrt[2.]*GF] (* [GeV] *);
+SW2MZ        = 0.23122 (* From PDG 2018; MSbar at MZ *);
+SW           = Sqrt[SW2MZ];
+sw           = SW;
 \[Lambda]    = 2*MH^2/vev^2  (* Dimensionless Higgs trilinear *);
 
 
