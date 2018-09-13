@@ -30,8 +30,8 @@ Do[Q5/:Q5["DMEFT"][i] = i,{i,ND5}];
 
 
 (* Clear[Q6] *)
-Do[Q6/:Q6["DMEFT"][i,j] = NG*(i-1)+j,{i,NFlavorI},{j,NG}]
-Do[Q6/:Q6["DMEFT"][NFlavorI+i] = NFlavorI*NG+i,{i,NFlavor0}]
+Do[Q6/:Q6["DMEFT"][i,j] = ND5+NG*(i-1)+j,{i,NFlavorI},{j,NG}]
+Do[Q6/:Q6["DMEFT"][NFlavorI+i] = ND5+NFlavorI*NG+i,{i,NFlavor0}]
 
 
 End[]
