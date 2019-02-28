@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2019-02-28
+### Added
+- This version implements the matching at the EW scale in anticipation of version 2 of the code which will implement the RG running above the EW scale. The operator basis above the EW scale is defined in the following files:
+   - `dmeft.m`
+   - `xxeft.m`
+   - `smeft.m`
+- The matching is implemented in `matchew.m`
+- Added new functions to set the hypercharge and isospin of the DM multiplet and to set the EFT scale.
+### Changed
+- Electroweak inputs in `inputs.m`; mainly changed the definition of the Higgs vev in terms of the Fermi constant.
+### Fixed
+- Bug in `formfactors.m`: pion exchange matching contribution of `Q_4^(7)` to `O_{NR,6}^n` -- thanks to Felix Kahlhoefer for pointing it out. 
+
 ## [1.0.1] - 2017-11-01
 ### Added
 - This `CHANGELOG.md` file.
