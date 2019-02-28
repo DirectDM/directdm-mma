@@ -7,7 +7,13 @@ Begin["`Private`"]
 
 
 (* By default, the DM is a Dirac fermion *)
-$DMType= "D";
+$DMType = "D";
+$IX = 0;
+$YX = 0;
+$DX = 2*$IX + 1;
+$JX = $IX*($IX+1);
+(* By default, the DMEFT scale is 1 TeV *)
+$Lambda = 1*^3;
 
 
 dmtypes = {"D","M","C","R"};
@@ -28,6 +34,22 @@ SetDMType[type_]:=Module[{},
 	];
 ];
 
+SetDMHypercharge[hyp_]:=Module[{},
+	$YX = hyp;
+];
+
+SetDMIsospin[iso_]:=Module[{},
+	If[Mod[iso,0.5]!=0.,
+		Print["The DM weak isospin must be a integer multiple of 1/2"]; Abort[],
+		$IX = iso;
+		$DX = 2*iso+1;
+		$JX = iso*(iso+1);
+	];
+];
+
+
+SetScale[scale_]:=Module[{}, $Lambda = scale;];
+
 
 n/:n["u"]=0; n/:n["d"]=1; n/:n["s"]=2;
 
@@ -36,23 +58,30 @@ flavors = {"u","d","s","c","b","t"};
 *)
 
 
-quarks = {"u","d","s","c","b","t"};
+quarks  = {"u","d","s","c","b","t"};
+leptons = {"e","mu","tau"};
+
+
+ui[gen_] := Switch[gen,1,"u",2,"c",3,"t"];
+di[gen_] := Switch[gen,1,"d",2,"s",3,"b"];
+li[gen_] := Switch[gen,1,"e",2,"mu",3,"tau"];
 
 
 flavors[nf_] := Switch[nf,\
-	6, {"u","d","s","c","b","t","e","mu","tau"},
-	5, {"u","d","s","c","b",    "e","mu","tau"},
-	4, {"u","d","s","c",        "e","mu","tau"},
-	3, {"u","d","s",            "e","mu","tau"}]
+	(* The 6Flavor basis, the flavor index is the generation index *)
+	6, {1,2,3},
+	5, {"u","d","s","c","b","e","mu","tau"},
+	4, {"u","d","s","c",    "e","mu","tau"},
+	3, {"u","d","s",        "e","mu","tau"}]
 
 
 Module[{idx},
 	(* Assign the quark indices from 0..5 *)
   idx=0;
-  Do[fnum/:fnum[NF_,f] = idx; idx++, {f,flavors[6][[;;6]]}];
+  Do[fnum/:fnum[NF_,f] = idx; idx++, {f,quarks}];
 	(* Assign the leptons indices from NF..(NF+3) *)
 	idx=0;
-  Do[fnum/:fnum[NF_,f] = NF + idx; idx++, {f,flavors[6][[7;;]]}];
+  Do[fnum/:fnum[NF_,f] = NF + idx; idx++, {f,leptons}];
 ]
 
 
@@ -115,10 +144,6 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
  	 * ------------------------------------------------------------------------ *)
 	tmp01 = ToString@Head[coeff];
   (* ------------------------------------------------------------------------ *
-	 * Make a list with the arguments of coeff[]                                *
- 	 * ------------------------------------------------------------------------ *)
-	tmp01 = ToString@Head[coeff];
-  (* ------------------------------------------------------------------------ *
 	 * Check that operator name starts with Q and has one number (dim)          *
  	 * ------------------------------------------------------------------------ *)
 	If[!StringMatchQ[tmp01, RegularExpression["Q[567]"]], Print[MsgOpNam]; Abort[]];
@@ -134,8 +159,9 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 	d = tmp02[[1]]; i = tmp02[[2]]; If[Length@tmp02>2, f = tmp02[[3]]];
 	(*Return[{tmp01,d, tmp02}];*)
 	If[$DMType === "D", ChkOpInd = Switch[d,
-		5, MemberQ[{1,2},i],
-		6, MemberQ[Range[1,4],i],
+		(* NOTE: Input checking for the DMEFT basis is not fully implemented!! *)
+		5, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[4],i],MemberQ[{1,2},i]],
+		6, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[18],i],MemberQ[Range[4],i]],
 		7, MemberQ[Range[1,10],i],
 		_, ChkOpDim = False;]
 	];
@@ -163,7 +189,9 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 	 * 					 index
  	 * ------------------------------------------------------------------------ *)
 	ChkOpFlv = True;
-	If[Length[tmp02]>=3,ChkOpFlv = MemberQ[flavors[NumFlavors[basis]], f];
+	If[Length[tmp02]>=3,ChkOpFlv = 
+		If[basis==="6Flavor"|"DMEFT",MemberQ[{1,2,3},f],
+			MemberQ[flavors[NumFlavors[basis]], f]];
 	If[!ChkOpFlv, Print[MsgOpFlv]; Abort[]];];
 ]
 
@@ -189,7 +217,7 @@ SetCoeffInt[basis_,coeff_,value_]:=Module[{tmp1, tmp2},
 ]
 
 
-NumFlavors[basis_] := Switch[basis, "5Flavor", 5, "4Flavor", 4, "3Flavor", 3];
+NumFlavors[basis_] := Switch[basis, "6Flavor", 3, "5Flavor", 5, "4Flavor", 4, "3Flavor", 3];
 
 
 CoeffsList[basis_] := If[StringMatchQ[basis,{"NR_p","NR_n"}], CoeffsListInt[basis],
@@ -240,6 +268,7 @@ BasisID/:BasisID["NR"] 			= 0;
 BasisID/:BasisID["3Flavor"] = 1;
 BasisID/:BasisID["4Flavor"] = 6;
 BasisID/:BasisID["5Flavor"] = 9;
+BasisID/:BasisID["DMEFT"]   = 13;
 
 
 (* By default, matching at LO in q^2 expansion *)
@@ -262,10 +291,16 @@ from a high to a low scale at the moment."]; Abort[];];
 	RMat[BasisID["3Flavor"]] = IdentityMatrix[BasisDim["3Flavor"]];
 	RMat[BasisID["4Flavor"]] = RTMP[4, "MB",   "2GeV"];
 	RMat[BasisID["5Flavor"]] = RTMP[5, "MZ",   "MB" ];
+	(* For now, no running in the 6 flavor basis -- tie in the RUNEW *)
+	RMat[BasisID["DMEFT"]]   = IdentityMatrix[BasisDim["DMEFT"]];
   (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
 	Switch[ bi+bf,
+		26, UMat = If[runtf, RMat[13], IdentityMatrix[BasisDim["DMEFT"]]],
+		22, UMat = If[runtf, MATEW.RMat[13], MATEW],
+		19, UMat = If[runtf, MAT45.RMat[9].MATEW.RMat[13], MAT45.MATEW],
 		18, UMat = If[runtf, RMat[9], IdentityMatrix[BasisDim["5Flavor"]]],
 		15, UMat = If[runtf, MAT45.RMat[9], MAT45],
+		14, UMat = If[runtf, MAT34.RMat[6].MAT45.RMat[9].MATEW.RMat[13], MAT34.MAT45.MATEW],
 		12, UMat = If[runtf, RMat[6], IdentityMatrix[BasisDim["4Flavor"]]],
 		10, UMat = If[runtf, MAT34.RMat[6].MAT45.RMat[9], MAT34.MAT45],
 		 7, UMat = If[runtf, MAT34.RMat[6], MAT34],
@@ -273,6 +308,7 @@ from a high to a low scale at the moment."]; Abort[];];
 		(* ----------------------------------------------------------------------- * 
      *  The following cases end in the NR basis, must treat p & n separately
 		 * ----------------------------------------------------------------------- *)
+		13, UMat = If[runtf, RMat[1].MAT34.RMat[6].MAT45.RMat[9].MATEW.RMat[13], MAT34.MAT45.MATEW],
 		 9, UMat = If[runtf, RMat[1].MAT34.RMat[6].MAT45.RMat[9], MAT34.MAT45],
 		 6, UMat = If[runtf, RMat[1].MAT34.RMat[6], MAT34],
 		 1, UMat = If[runtf, RMat[1], IdentityMatrix[BasisDim["3Flavor"]]],
@@ -333,6 +369,13 @@ as2l[al0_, mu0_, muf_, nf_] :=
 
 AlphaS["MB"]   = as1l[AlphaS["MZ"]  , MZ, MBatMBms, 5];
 AlphaS["2GeV"] = as1l[AlphaS["MB"]  , MBatMBms, 2, 4];
+
+(* -------------------------------------------------------------------------- *
+ *  The coefficients of the SU(2)_L and U(1)_Y beta functions.
+ *  References: 
+ * -------------------------------------------------------------------------- *)
+bet["g1",0] := -41.0/6.0-$YX^2/3.0*$DX;
+bet["g2",0] := +19.0/6.0-4.0/9.0*$JX*$DX;
 
 
 End[]

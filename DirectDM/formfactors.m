@@ -98,9 +98,10 @@ FF0["G","p"] = FF0["G","n"] = -2*mG/27;
 aGtPi  = -mtilde*MN*gA*(1/mu-1/md)/2;
 aGtEta = -mtilde*MN*(\[CapitalDelta]u+\[CapitalDelta]d-2\[CapitalDelta]s)*\
   (1/mu+1/md-2/ms)/6;
-bGt    = -mtilde*MN*(\[CapitalDelta]u/mu + \[CapitalDelta]d/md + \[CapitalDelta]s/ms);
-FF0["Gt","p"] = -qsq*PionPole*(+aGtPi) - qsq*EtaPole*aGtEta + bGt;
-FF0["Gt","n"] = -qsq*PionPole*(-aGtPi) - qsq*EtaPole*aGtEta + bGt;
+bGtp   = -mtilde*MN*(\[CapitalDelta]up/mu + \[CapitalDelta]dp/md + \[CapitalDelta]s/ms);
+bGtn   = -mtilde*MN*(\[CapitalDelta]un/mu + \[CapitalDelta]dn/md + \[CapitalDelta]s/ms);
+FF0["Gt","p"] = -qsq*PionPole*(+aGtPi) - qsq*EtaPole*aGtEta + bGtp;
+FF0["Gt","n"] = -qsq*PionPole*(-aGtPi) - qsq*EtaPole*aGtEta + bGtn;
 
 
 (* ===== Tensor current ===== *)
