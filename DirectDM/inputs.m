@@ -92,13 +92,16 @@ dFT1["s","p"] = dFT1["s","n"] = 0 * (- 2.0) (* GeV^-2 *);
 (* -------------------------------------------------------------------------- * 
  *  Electroweak inputs
  * -------------------------------------------------------------------------- *)
-\[Alpha]emQ0 = 1./137;  		(* PDG 2016 -- EW SM review *)
-\[Alpha]emMZ = 1./127.950;  (* PDG 2016 -- EW SM review *)
-MH           = 125.18  (* [GeV] *);
-MZ           = 91.1876 (* [GeV] *);
+\[Alpha]emQ0 = 1./137.036;  (* PDG 2018 -- EW SM review *)
+\[Alpha]emMZ = 1./127.955;  (* PDG 2018 -- EW SM review *)
+MH           = 125.10;      (* [GeV] *)
+MZ           = 91.1876;     (* [GeV] *)
+MW           = 80.379;      (* [GeV] *)
+MT           = 173.;        (* [GeV] *)
 GF           = 1.1663787*^-5;
 vev          = 1/Sqrt[Sqrt[2.]*GF] (* [GeV] *);
 SW2MZ        = 0.23122 (* From PDG 2018; MSbar at MZ *);
+CW2MZ        = 1-SW2MZ;
 SW           = Sqrt[SW2MZ];
 sw           = SW;
 \[Lambda]    = 2*MH^2/vev^2  (* Dimensionless Higgs trilinear *);

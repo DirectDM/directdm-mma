@@ -12,6 +12,7 @@ $IX = 0;
 $YX = 0;
 $DX = 2*$IX + 1;
 $JX = $IX*($IX+1);
+$MChi = 1*^2;
 (* By default, the DMEFT scale is 1 TeV *)
 $Lambda = 1*^3;
 
@@ -33,6 +34,10 @@ SetDMType[type_]:=Module[{},
 		$DMType=type; Print["Set DM type to " <> DMTypeString[type]]
 	];
 ];
+
+
+SetDMMass[mx_]:=Module[{},$MChi = mx;];
+
 
 SetDMHypercharge[hyp_]:=Module[{},
 	$YX = hyp;
@@ -68,7 +73,7 @@ li[gen_] := Switch[gen,1,"e",2,"mu",3,"tau"];
 
 
 flavors[nf_] := Switch[nf,\
-	(* The 6Flavor basis, the flavor index is the generation index *)
+	(* In the 6Flavor basis, the flavor index is the generation index *)
 	6, {1,2,3},
 	5, {"u","d","s","c","b","e","mu","tau"},
 	4, {"u","d","s","c",    "e","mu","tau"},
@@ -162,12 +167,12 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 		(* NOTE: Input checking for the DMEFT basis is not fully implemented!! *)
 		5, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[4],i],MemberQ[{1,2},i]],
 		6, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[18],i],MemberQ[Range[4],i]],
-		7, MemberQ[Range[1,10],i],
+		7, MemberQ[Join[Range[1,10],{23,25}],i],
 		_, ChkOpDim = False;]
 	];
 	If[$DMType === "M", ChkOpInd = Switch[d,
 		6, MemberQ[{2,4},i],
-		7, MemberQ[Range[1,8],i],
+		7, MemberQ[Join[Range[1,8],{23,25}],i],
 		_, ChkOpDim = False;]
 	];
 	If[$DMType === "C", ChkOpInd = Switch[d,
@@ -274,17 +279,7 @@ BasisID/:BasisID["DMEFT"]   = 13;
 (* By default, matching at LO in q^2 expansion *)
 Options[ComputeCoeffs] = {Running->True, NLO->False};
 
-
-ComputeCoeffs[basi_, basf_, OptionsPattern[]] := Module[
-	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult, NLORep},
-	runtf = OptionValue[Running];
-  (* Make a replacement list to turn off/on the NLO option for NR basis *)
-  NLORep=Switch[OptionValue[NLO],False,{$NLO->0},True,{$NLO->1}];
-	bi = BasisID[basi];
-	bf = BasisID[basf];
-  (* ------------------------------------------------------------------------ *)
-	If[ bi < bf, Print["Running and matching are only implemented\n\
-from a high to a low scale at the moment."]; Abort[];];
+EvolutionMatrix[ bit_, runtf_, NLORep_] := Module[{UMat,RMat},
   (* ------------------------------------------------------------------------ *)
 	(* RMat[BasisID["3Flavor"]] = RTMP[3, "3GeV", "2GeV"]; *)
 	(* No running in the 3Flavor basis -- match 4->3 at 2GeV *)
@@ -293,8 +288,7 @@ from a high to a low scale at the moment."]; Abort[];];
 	RMat[BasisID["5Flavor"]] = RTMP[5, "MZ",   "MB" ];
 	(* For now, no running in the 6 flavor basis -- tie in the RUNEW *)
 	RMat[BasisID["DMEFT"]]   = IdentityMatrix[BasisDim["DMEFT"]];
-  (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
-	Switch[ bi+bf,
+	Switch[ bit,
 		26, UMat = If[runtf, RMat[13], IdentityMatrix[BasisDim["DMEFT"]]],
 		22, UMat = If[runtf, MATEW.RMat[13], MATEW],
 		19, UMat = If[runtf, MAT45.RMat[9].MATEW.RMat[13], MAT45.MATEW],
@@ -315,12 +309,49 @@ from a high to a low scale at the moment."]; Abort[];];
 		 0, UMat = IdentityMatrix[BasisDim["NR"]]; Print["Both the initial and final bases\
 are the NR EFT basis.\nThere is nothing to do. The evolution matrix is the Identity."];
 	];
-  (* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *)
+	Return[UMat];
+]
+
+ComputeCoeffs[basi_, basf_, OptionsPattern[]] := Module[
+	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult, NLORep},
+	runtf = OptionValue[Running];
+  (* Make a replacement list to turn off/on the NLO option for NR basis *)
+  NLORep=Switch[OptionValue[NLO],False,{$NLO->0},True,{$NLO->1}];
+	bi = BasisID[basi];
+	bf = BasisID[basf];
+  (* ------------------------------------------------------------------------ *)
+	If[ bi < bf, Print["Running and matching are only implemented\n\
+from a high to a low scale at the moment."]; Abort[];];
+	(* ------------------------------------------------------------------------ *
+ 	 *  Now treat the gauge contribution to the matching at MZ (inc. twist-2)  
+ 	 * ------------------------------------------------------------------------ *)
+	If[ (bi==13)&&(bf < 13), 
+		Block[{tmp56,tmpI5,ctmp5},
+			tmp56 = EvolutionMatrix[13+9,runtf,NLORep];
+			tmpI5 = EvolutionMatrix[9+bf,runtf,NLORep];
+			CoeffsListInt["5Flavor"] = tmp56.CoeffsListInt[basi];
+			Do[
+				SetCoeff["5Flavor",Q7[5,fl], GetCoeff["5Flavor",Q7[5,fl]] + DeltaC75[$MChi,fl]];
+				SetCoeff["5Flavor",Q6[4,fl], GetCoeff["5Flavor",Q6[4,fl]] + DeltaC64[$MChi,fl]], 
+				{fl,flavors[5]}];
+			Do[SetCoeff["5Flavor",Q7[23,fl],
+				GetCoeff["5Flavor",Q7[23,fl]] + DeltaC723[$MChi,fl]],{fl,quarks[[;;5]]}];
+			SetCoeff["5Flavor",Q7[1], GetCoeff["5Flavor",Q7[1]] + DeltaC71[$MChi]]; 
+			If[ bf != 0,
+				CoeffsListInt[basf] = tmpI5.CoeffsListInt["5Flavor"];,
+				CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].tmpI5.CoeffsListInt["5Flavor"]/.NLORep;
+				CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].tmpI5.CoeffsListInt["5Flavor"]/.NLORep;
+			]
+		],
+ 	(* ------------------------------------------------------------------------ *)
+	UMat = EvolutionMatrix[bi+bf,runtf,NLORep];
 	If[ bf != 0,
 		CoeffsListInt[basf] = UMat.CoeffsListInt[basi];,
 		CoeffsListInt["NR_p"] = CNRMAT[$DMType,"p"].UMat.CoeffsListInt[basi]/.NLORep;
 		CoeffsListInt["NR_n"] = CNRMAT[$DMType,"n"].UMat.CoeffsListInt[basi]/.NLORep;
+	]
 	];
+	CoeffsListInt[basf] = Chop[CoeffsListInt[basf]];
 ]
 
 

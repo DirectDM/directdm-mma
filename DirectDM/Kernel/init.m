@@ -4,6 +4,7 @@ Get["DirectDM`usage`"];
 Get["DirectDM`functions`"];
 Get["DirectDM`inputs`"];
 Get["DirectDM`formfactors`"];
+Get["DirectDM`two`"];
 
 
 (* Bases *)

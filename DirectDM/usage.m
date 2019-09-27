@@ -8,7 +8,7 @@ Please cite ",
 Hyperlink["[1611.00368]","https://inspirehep.net/record/1495512"],", ",
 Hyperlink["[1707.06998]","https://inspirehep.net/record/1611242"],", and ",
 Hyperlink["[1708.02678]","https://inspirehep.net/record/1615183"],"."];
-Print["\nAvailable functions are: SetDMType, SetDMHypercharge, SetDMIsospin, SetCoeff, SetCoeffMstar, GetCoeff, CoeffsList, ComputeCoeffs, \
+Print["\nAvailable functions are: SetDMType, SetDMMass, SetDMHypercharge, SetDMIsospin, SetCoeff, SetCoeffMstar, GetCoeff, CoeffsList, ComputeCoeffs, \
 and ResetBasis.\n\
 Implemented bases are: \"5Flavor\", \"4Flavor\", \"3Flavor\", and \"NR\".\n\n\
 For the \"NR\" basis, the CoeffsList function takes \"NR_p\" and \"NR_n\" as \
@@ -33,6 +33,9 @@ corresponding to the proton or neutron Wilson coefficients."
 SetDMType::usage="SetDMType[\"type\"] sets the DM to one of the following \
 types:\n\
 \t\"D\" = Dirac,\n\t\"M\" = Majorana,\n\t\"C\" = complex scalar,\n\t\"R\" = real scalar."
+
+
+SetDMMass::usage="SetDMMass[mass] sets the DM mass in GeV"
 
 
 SetDMHypercharge::usage="SetDMHypercharge[\"YChi\"] sets the DM Hypercharge to YChi."

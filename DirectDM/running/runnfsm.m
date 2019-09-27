@@ -27,6 +27,20 @@ RsGluGlu[nf_, asmuh_, asmul_] := \
 
 R5sGluGlu[nf_, asmuh_, asmul_] := asmul / asmuh;
 
+c
+T2ADM[nf_] := Module[{tmp},
+	tmp = DiagonalMatrix[Join[ConstantArray[64/9,nf],{4/3*nf}]];
+	tmp[[;;-2,-1]]=ConstantArray[-4/3, nf];
+	tmp[[-1,;;-2]]=ConstantArray[-64/9,nf];
+	Return[tmp];
+];
+
+
+RTwistTwo[nf_, asmuh_, asmul_] := Module[{TMP},\
+	TMP = Transpose[T2ADM[nf]];
+	Return[MatrixExp[Log[asmuh/asmul]*TMP/(2*bet[0][nf])]];
+];
+
 
 (* -------------------------------------------------------------------------- *
  *  The QED anomalous dimension matrix
@@ -109,6 +123,10 @@ RTMP[nf_, muh_, mul_] := Module[{dim,mat,bas,qrk,lep,asmuh,asmul,tmp1,tmp2},
 		mat[[ Q7[bas][7,f], Q7[bas][3] ]] = tmp2[[1,2]];\
 		mat[[ Q7[bas][8,f], Q7[bas][4] ]] = tmp2[[1,2]];\
 		, {f,qrk} ];
+	(* ------------------------------------------------- *
+	 *  Mixing between twist-2 operators
+	 * ------------------------------------------------- *)
+	mat[[ -(nf+1);;, -(nf+1);; ]] = RTwistTwo[nf, asmuh, asmul];
 	(* ------------------------------------------------- *)
 	Return[mat];
 ]

@@ -28,14 +28,14 @@ NUCS  = {"p","n"};
  * ------------------------------------------------------------------ *)
 Block[{cnr}, cnr = 1;
 	(* --------------------------------------------------------------- *)
-	CNRMATp[[cnr,Q53[1]]] = -\[Alpha]emQ0 / (2 \[Pi] MX);
+	CNRMATp[[cnr,Q53[1]]] = -\[Alpha]emQ0 / (2 \[Pi] $MChi);
 	CNRMATn[[cnr,Q53[1]]] = 0 (* since Qn = 0 *);
 	(* --------------------------------------------------------------- *)
 	nn = "p";
 	Do[
 		CNRMATp[[cnr,Q63[1,qq]]] = F1[qq,nn];
 		CNRMATp[[cnr,Q73[5,qq]]] = FS[qq,nn];
-		CNRMATp[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*MX)*(FT0[qq,nn]-FT1[qq,nn]);
+		CNRMATp[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*$MChi)*(FT0[qq,nn]-FT1[qq,nn]);
 		,{qq,LQRKS}];
 	CNRMATp[[cnr,Q73[1]]] = FG[nn];
 	(* --------------------------------------------------------------- *)
@@ -43,7 +43,7 @@ Block[{cnr}, cnr = 1;
 	Do[
 		CNRMATn[[cnr,Q63[1,qq]]] = F1[qq,nn];
 		CNRMATn[[cnr,Q73[5,qq]]] = FS[qq,nn];
-		CNRMATn[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*MX)*(FT0[qq,nn]-FT1[qq,nn]);
+		CNRMATn[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*$MChi)*(FT0[qq,nn]-FT1[qq,nn]);
 		,{qq,LQRKS}];
 	CNRMATn[[cnr,Q73[1]]] = FG[nn];
 	(* --------------------------------------------------------------- *)
@@ -97,14 +97,14 @@ Block[{cnr,tmp,tmpp,tmpn}, cnr = 6;
 	nn = "p";
 	Do[
 		CNRMATp[[cnr,Q63[4,qq]]] = FPp[qq,nn];
-		CNRMATp[[cnr,Q73[8,qq]]] = MN/MX*FP[qq,nn];
-		CNRMATp[[cnr,Q73[4]]] = MN/MX*FGt[nn];,{qq,LQRKS}];
+		CNRMATp[[cnr,Q73[8,qq]]] = MN/$MChi*FP[qq,nn];
+		CNRMATp[[cnr,Q73[4]]] = MN/$MChi*FGt[nn];,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 	nn = "n";
 	Do[
 		CNRMATn[[cnr,Q63[4,qq]]] = FPp[qq,nn];
-		CNRMATn[[cnr,Q73[8,qq]]] = MN/MX*FP[qq,nn];
-		CNRMATn[[cnr,Q73[4]]] = MN/MX*FGt[nn];,{qq,LQRKS}];
+		CNRMATn[[cnr,Q73[8,qq]]] = MN/$MChi*FP[qq,nn];
+		CNRMATn[[cnr,Q73[4]]] = MN/$MChi*FGt[nn];,{qq,LQRKS}];
 ]
 
 
@@ -141,12 +141,12 @@ Block[{cnr}, cnr = 9;
 	nn = "p";
 	Do[
 		CNRMATp[[cnr,Q63[2,qq]]] = 2*(F1[qq,nn]+F2[qq,nn]);
-		CNRMATp[[cnr,Q63[3,qq]]] = 2*MN/MX*FA[qq,nn];,{qq,LQRKS}];
+		CNRMATp[[cnr,Q63[3,qq]]] = 2*MN/$MChi*FA[qq,nn];,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 	nn = "n";
 	Do[
 		CNRMATn[[cnr,Q63[2,qq]]] = 2*(F1[qq,nn]+F2[qq,nn]);
-		CNRMATn[[cnr,Q63[3,qq]]] = 2*MN/MX*FA[qq,nn];,{qq,LQRKS}];
+		CNRMATn[[cnr,Q63[3,qq]]] = 2*MN/$MChi*FA[qq,nn];,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 ]
 
@@ -160,13 +160,13 @@ Block[{cnr,tmpp,tmpn}, cnr = 10;
 	Do[
 		CNRMATp[[cnr,Q73[3]]] = FGt[nn];
 		CNRMATp[[cnr,Q73[7,qq]]] = FP[qq,nn];
-		CNRMATp[[cnr,Q73[10,qq]]] = -2*MN/MX*FT0[qq,nn];,{qq,LQRKS}];
+		CNRMATp[[cnr,Q73[10,qq]]] = -2*MN/$MChi*FT0[qq,nn];,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 	nn = "n";
 	Do[
 		CNRMATn[[cnr,Q73[3]]] = FGt[nn];
 		CNRMATn[[cnr,Q73[7,qq]]] = FP[qq,nn];
-		CNRMATn[[cnr,Q73[10,qq]]] = -2*MN/MX*FT0[qq,nn];,{qq,LQRKS}];
+		CNRMATn[[cnr,Q73[10,qq]]] = -2*MN/$MChi*FT0[qq,nn];,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 ]
 
@@ -181,14 +181,14 @@ Block[{cnr,tmp}, cnr = 11;
 	(* --------------------------------------------------------------- *)
 	nn = "p";
 	Do[
-		CNRMATp[[cnr,Q73[2]]] 		= -MN/MX*FG[nn];
-		CNRMATp[[cnr,Q73[6,qq]]] 	= -MN/MX*FS[qq,nn];
+		CNRMATp[[cnr,Q73[2]]] 		= -MN/$MChi*FG[nn];
+		CNRMATp[[cnr,Q73[6,qq]]] 	= -MN/$MChi*FS[qq,nn];
 		CNRMATp[[cnr,Q73[10,qq]]] = 2*(FT0[qq,nn]-FT1[qq,nn]);,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 	nn = "n";
 	Do[
-		CNRMATn[[cnr,Q73[2]]] 		= -MN/MX*FG[nn];
-		CNRMATn[[cnr,Q73[6,qq]]] 	= -MN/MX*FS[qq,nn];
+		CNRMATn[[cnr,Q73[2]]] 		= -MN/$MChi*FG[nn];
+		CNRMATn[[cnr,Q73[6,qq]]] 	= -MN/$MChi*FS[qq,nn];
 		CNRMATn[[cnr,Q73[10,qq]]] = 2*(FT0[qq,nn]-FT1[qq,nn]);,{qq,LQRKS}];
 	(* --------------------------------------------------------------- *)
 ]

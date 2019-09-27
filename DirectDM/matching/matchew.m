@@ -13,7 +13,7 @@ MATEW = ConstantArray[0,{BasisDim["5Flavor"],BasisDim["6Flavor"]}];
  *  The dimension 5 operators
  * ------------------------------------------------------------------ *)
 MATEW[[Q55[1],Q56D[1]]] := 1/$Lambda;
-MATEW[[Q55[1],Q56D[2]]] := 1/$Lambda$*YX/2;
+MATEW[[Q55[1],Q56D[2]]] := 1/$Lambda*$YX/2;
 MATEW[[Q55[2],Q56D[5]]] := 1/$Lambda;
 MATEW[[Q55[2],Q56D[6]]] := 1/$Lambda*$YX/2;
 
@@ -132,6 +132,12 @@ MATEW[[Q75[6,ff],Q56D[7]]] := - 1/$Lambda/MH^2;
 MATEW[[Q75[5,ff],Q56D[3]]] := - 1/$Lambda/MH^2;
 MATEW[[Q75[6,ff],Q56D[7]]] := - 1/$Lambda/MH^2;
 , {ff,flavors[5]}];
+
+
+(* ------------------------------------------------------------------ *
+ *  The twist-2 operators -- scalar
+ * ------------------------------------------------------------------ *)
+
 
 
 End[]
