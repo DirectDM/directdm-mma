@@ -23,7 +23,7 @@ C6[i_,___]SM[__]:>0/;i>100
 };
 
 
-adm04=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-xxeft6-pengs.m"}]]/.{
+adm04=Get[FileNameJoin[{NotebookDirectory[],"DirectDM","adms","result-xxeft6-pengs.m"}]]/.{
 (* Turn off the self-mixing in the XXEFT and mixing between XXEFT and SMEFT *)
 C6[i_,___]DM[__]:>0/;i>100
 };
