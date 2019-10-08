@@ -11,19 +11,19 @@ DMProps={JX->2,dx->3,YX->0,N2->0};
 (*Preamble*)
 
 
-adm01=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-dmeft6-pengs.m"];
+adm01=Get[FileNameJoin[{NotebookDirectory[],"DirectDM","adms","result-dmeft6-pengs.m"}]];
 
 
-adm02=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-dmeft6.m"];
+adm02=Get[FileNameJoin[{NotebookDirectory[],"DirectDM","adms","result-dmeft6.m"}]];
 
 
-adm03=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-smeft6-pengs.m"]/.{
+adm03=Get[FileNameJoin[{NotebookDirectory[],"DirectDM","adms","result-smeft6-pengs.m"}]]/.{
 (* Turn off the self-mixing in the SMEFT *)
 C6[i_,___]SM[__]:>0/;i>100
 };
 
 
-adm04=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-xxeft6-pengs.m"]/.{
+adm04=Get["~/HEP/Projects/07_RGDM/anomalous-dims/results/result-xxeft6-pengs.m"}]]/.{
 (* Turn off the self-mixing in the XXEFT and mixing between XXEFT and SMEFT *)
 C6[i_,___]DM[__]:>0/;i>100
 };
