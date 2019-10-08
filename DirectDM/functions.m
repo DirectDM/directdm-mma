@@ -201,7 +201,8 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 ]
 
 
-SetCoeff[basis_,coeff_,value_] := Module[{tmp1},
+SetCoeff[btmp_,coeff_,value_] := Module[{tmp1,basis},
+	If[btmp==="DMEFT",basis="6Flavor",basis=btmp];
 	ValidateCoeff[basis,coeff];
 	Switch[$DMType, 
 		"D", SetCoeffInt[basis,coeff,value],
@@ -212,7 +213,8 @@ SetCoeff[basis_,coeff_,value_] := Module[{tmp1},
 ];
 
 
-SetCoeffInt[basis_,coeff_,value_]:=Module[{tmp1, tmp2},
+SetCoeffInt[btmp_,coeff_,value_]:=Module[{tmp1, tmp2, basis},
+	If[btmp==="DMEFT",basis="6Flavor",basis=btmp];
 	tmp1 = CoeffsListInt[basis];
   If[NumericQ[coeff],
     tmp2 = coeff,
@@ -251,7 +253,8 @@ CoeffsList[basis_] := If[StringMatchQ[basis,{"NR_p","NR_n"}], CoeffsListInt[basi
 ];
 
 
-GetCoeff[basis_,coeff_]:= Module[{tmp,tmpcoeff},
+GetCoeff[btmp_,coeff_]:= Module[{tmp,tmpcoeff,basis},
+	If[btmp==="DMEFT",basis="6Flavor",basis=btmp];
 	If[basis === "NR_p" || basis === "NR_n",
 	Return[CoeffsListInt[basis][[coeff]]],
 	ValidateCoeff[basis,coeff];
@@ -264,7 +267,8 @@ GetCoeff[basis_,coeff_]:= Module[{tmp,tmpcoeff},
 ]
 
 
-ResetBasis[basis_] := Module[{},
+ResetBasis[btmp_] := Module[{basis},
+	If[btmp==="DMEFT",basis="6Flavor",basis=btmp];
   CoeffsListInt[basis] = ConstantArray[0,BasisDim[basis]];
 ]
 
@@ -273,6 +277,7 @@ BasisID/:BasisID["NR"] 			= 0;
 BasisID/:BasisID["3Flavor"] = 1;
 BasisID/:BasisID["4Flavor"] = 6;
 BasisID/:BasisID["5Flavor"] = 9;
+BasisID/:BasisID["6Flavor"] = 13;
 BasisID/:BasisID["DMEFT"]   = 13;
 
 
@@ -312,8 +317,9 @@ are the NR EFT basis.\nThere is nothing to do. The evolution matrix is the Ident
 	Return[UMat];
 ]
 
+
 ComputeCoeffs[basi_, basf_, OptionsPattern[]] := Module[
-	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult, NLORep},
+	{bi,bf,tmpp,tmpn, c75tmp, UMat, RMat, runtf, mult, NLORep, deltmp, del56i,mxtmp},
 	runtf = OptionValue[Running];
   (* Make a replacement list to turn off/on the NLO option for NR basis *)
   NLORep=Switch[OptionValue[NLO],False,{$NLO->0},True,{$NLO->1}];
@@ -326,10 +332,31 @@ from a high to a low scale at the moment."]; Abort[];];
  	 *  Now treat the gauge contribution to the matching at MZ (inc. twist-2)  
  	 * ------------------------------------------------------------------------ *)
 	If[ (bi==13)&&(bf < 13), 
-		Block[{tmp56,tmpI5,ctmp5},
-			tmp56 = EvolutionMatrix[13+9,runtf,NLORep];
+		Block[{tmp66,tmp56,tmpI5,ctmp5},
+			(* -------------------------------------------------------------------- *
+ 	 		 *  [1] Do the running in the 6 flavor basis first
+ 	 		 * -------------------------------------------------------------------- *)
+			tmp66 = EvolutionMatrix[13+13,runtf,NLORep];
+			(* -------------------------------------------------------------------- *
+ 	 		 *  [2] Shift the DM mass
+ 	 		 * -------------------------------------------------------------------- *)
+			SetDMMass[$MChi-MZ^2*CW2MZ*SW2MZ/(2*Pi*\[Alpha]emMZ*$Lambda)*\
+					(GetCoeff["6Flavor",Q5[3]]+$YX/4*GetCoeff["6Flavor",Q5[4]])];
+			(* -------------------------------------------------------------------- *
+ 	 		 *  [3] Shift the dimension 5 Wilson coefficients
+ 	 		 * -------------------------------------------------------------------- *)
+			deltmp = (CW2MZ*MZ^2*SW2MZ)/(2*Pi*\[Alpha]emMZ*$Lambda*$MChi)*\
+				(GetCoeff["6Flavor",Q5[7]] + $YX/4*GetCoeff["6Flavor",Q5[8]]);
+			del56i[i_] := deltmp*GetCoeff["6Flavor",Q5[If[i<=4,i+4,i-4]]];
+			Do[SetCoeff["6Flavor",Q5[i],GetCoeff["6Flavor",Q5[i]]+If[i<=4,1,-1]*del56i[i]],{i,{3,4,7,8}}];
+			(* -------------------------------------------------------------------- *
+ 	 		 *  [4] Match from NF=6 to NF=5; no running!
+ 	 		 * -------------------------------------------------------------------- *)
+			tmp56 = EvolutionMatrix[13+9,False,NLORep];
+			(* --- 5 flavor > final    --- *)
 			tmpI5 = EvolutionMatrix[9+bf,runtf,NLORep];
-			CoeffsListInt["5Flavor"] = tmp56.CoeffsListInt[basi];
+			CoeffsListInt["5Flavor"] = tmp56.tmp66.CoeffsListInt[basi];
+			(* --- Gauge contribution to the matching --- *)
 			Do[
 				SetCoeff["5Flavor",Q7[5,fl], GetCoeff["5Flavor",Q7[5,fl]] + DeltaC75[$MChi,fl]];
 				SetCoeff["5Flavor",Q6[4,fl], GetCoeff["5Flavor",Q6[4,fl]] + DeltaC64[$MChi,fl]], 

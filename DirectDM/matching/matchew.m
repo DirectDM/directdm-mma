@@ -11,6 +11,8 @@ MATEW = ConstantArray[0,{BasisDim["5Flavor"],BasisDim["6Flavor"]}];
 
 (* ------------------------------------------------------------------ *
  *  The dimension 5 operators
+ *  Note: the shift in the WCs due to necessary field redefinitions
+ *        is performed in `functions.m`
  * ------------------------------------------------------------------ *)
 MATEW[[Q55[1],Q56D[1]]] := 1/$Lambda;
 MATEW[[Q55[1],Q56D[2]]] := 1/$Lambda*$YX/2;
@@ -129,8 +131,8 @@ MATEW[[Q75[2],Q56D[8]]] := 1/$Lambda/MH^2*$YX/4;
 Do[
 MATEW[[Q75[5,ff],Q56D[3]]] := - 1/$Lambda/MH^2;
 MATEW[[Q75[6,ff],Q56D[7]]] := - 1/$Lambda/MH^2;
-MATEW[[Q75[5,ff],Q56D[3]]] := - 1/$Lambda/MH^2;
-MATEW[[Q75[6,ff],Q56D[7]]] := - 1/$Lambda/MH^2;
+MATEW[[Q75[5,ff],Q56D[4]]] := - 1/$Lambda/MH^2*$YX/4;
+MATEW[[Q75[6,ff],Q56D[8]]] := - 1/$Lambda/MH^2*$YX/4;
 , {ff,flavors[5]}];
 
 
