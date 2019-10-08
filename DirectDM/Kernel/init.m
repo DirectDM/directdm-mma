@@ -9,7 +9,6 @@ Get["DirectDM`two`"];
 
 (* Bases *)
 
-Get["DirectDM`bases`dmeft`"];
 Get["DirectDM`bases`smeft`"];
 Get["DirectDM`bases`xxeft`"];
 Get["DirectDM`bases`sixflavor`"];

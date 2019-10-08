@@ -165,8 +165,8 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 	(*Return[{tmp01,d, tmp02}];*)
 	If[$DMType === "D", ChkOpInd = Switch[d,
 		(* NOTE: Input checking for the DMEFT basis is not fully implemented!! *)
-		5, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[4],i],MemberQ[{1,2},i]],
-		6, If[basis==="6Flavor"|"DMEFT",MemberQ[Range[18],i],MemberQ[Range[4],i]],
+		5, If[basis==="6Flavor",MemberQ[Range[8],i],MemberQ[{1,2},i]],
+		6, If[basis==="6Flavor",MemberQ[Range[18],i],MemberQ[Range[4],i]],
 		7, MemberQ[Join[Range[1,10],{23,25}],i],
 		_, ChkOpDim = False;]
 	];
@@ -195,7 +195,7 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
  	 * ------------------------------------------------------------------------ *)
 	ChkOpFlv = True;
 	If[Length[tmp02]>=3,ChkOpFlv = 
-		If[basis==="6Flavor"|"DMEFT",MemberQ[{1,2,3},f],
+		If[basis==="6Flavor",MemberQ[{1,2,3},f],
 			MemberQ[flavors[NumFlavors[basis]], f]];
 	If[!ChkOpFlv, Print[MsgOpFlv]; Abort[]];];
 ]
@@ -278,7 +278,6 @@ BasisID/:BasisID["3Flavor"] = 1;
 BasisID/:BasisID["4Flavor"] = 6;
 BasisID/:BasisID["5Flavor"] = 9;
 BasisID/:BasisID["6Flavor"] = 13;
-BasisID/:BasisID["DMEFT"]   = 13;
 
 
 (* By default, matching at LO in q^2 expansion *)
@@ -292,9 +291,9 @@ EvolutionMatrix[ bit_, runtf_, NLORep_] := Module[{UMat,RMat},
 	RMat[BasisID["4Flavor"]] = RTMP[4, "MB",   "2GeV"];
 	RMat[BasisID["5Flavor"]] = RTMP[5, "MZ",   "MB" ];
 	(* For now, no running in the 6 flavor basis -- tie in the RUNEW *)
-	RMat[BasisID["DMEFT"]]   = IdentityMatrix[BasisDim["DMEFT"]];
+	RMat[BasisID["6Flavor"]]   = IdentityMatrix[BasisDim["6Flavor"]];
 	Switch[ bit,
-		26, UMat = If[runtf, RMat[13], IdentityMatrix[BasisDim["DMEFT"]]],
+		26, UMat = If[runtf, RMat[13], IdentityMatrix[BasisDim["6Flavor"]]],
 		22, UMat = If[runtf, MATEW.RMat[13], MATEW],
 		19, UMat = If[runtf, MAT45.RMat[9].MATEW.RMat[13], MAT45.MATEW],
 		18, UMat = If[runtf, RMat[9], IdentityMatrix[BasisDim["5Flavor"]]],
