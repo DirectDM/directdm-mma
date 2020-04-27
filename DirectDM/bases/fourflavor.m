@@ -42,9 +42,9 @@ Do[Q7/:Q7["4Flavor"][i+4,j] = ND5+ND6+4+1+LEN*(i-1)+fnum[NF,j],{i,OP7fl},{j,flav
 
 (*Do[T2/:T2["4Flavor"][i] = ND5+ND6+ND7+i,{i,1,NF+1}]*)
 Do[
-	Q7/:Q7["3Flavor"][23,fl] = ND5+ND6+ND7+1+fnum[NF,fl],{fl,quarks[[;;NF]]}
+	Q7/:Q7["4Flavor"][23,fl] = ND5+ND6+ND7+1+fnum[NF,fl],{fl,quarks[[;;NF]]}
 ]
-	Q7/:Q7["3Flavor"][25] = ND5+ND6+ND7+NF+1;
+	Q7/:Q7["4Flavor"][25] = ND5+ND6+ND7+NF+1;
 
 
 End[]

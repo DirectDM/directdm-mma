@@ -14,11 +14,11 @@ RsTensor[nf_, asmuh_, asmul_] := \
 
 
 RsQrkGlu[nf_, asmuh_, asmul_] := \
-	MatrixExp[-(asmuh - asmul)/(4\[Pi])*{{0,4/3},{0,0}}*gam[0][nf]/(2*bet[0][nf]) ];
+	MatrixExp[+(asmuh - asmul)/(4\[Pi])*{{0,4/3},{0,0}}*gam[0][nf]/(2*bet[0][nf]) ];
 
 
 R5sQrkGlu[nf_, asmuh_, asmul_] := \
-	MatrixExp[-(asmuh - asmul)/(4\[Pi])*{{0,-8},{0,0}}/(2*bet[0][nf]) ];
+	MatrixExp[+(asmuh - asmul)/(4\[Pi])*{{0,-8},{0,0}}/(2*bet[0][nf]) ];
 
 
 RsGluGlu[nf_, asmuh_, asmul_] := \

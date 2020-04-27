@@ -36,6 +36,8 @@ Block[{cnr}, cnr = 1;
 		CNRMATp[[cnr,Q63[1,qq]]] = F1[qq,nn];
 		CNRMATp[[cnr,Q73[5,qq]]] = FS[qq,nn];
 		CNRMATp[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*$MChi)*(FT0[qq,nn]-FT1[qq,nn]);
+		CNRMATp[[cnr,Q73[23,qq]]]= 3./4*MN*F2q[qq,nn];
+		CNRMATp[[cnr,Q73[25]]]   = 3./4*MN*F2g[nn];
 		,{qq,LQRKS}];
 	CNRMATp[[cnr,Q73[1]]] = FG[nn];
 	(* --------------------------------------------------------------- *)
@@ -44,6 +46,8 @@ Block[{cnr}, cnr = 1;
 		CNRMATn[[cnr,Q63[1,qq]]] = F1[qq,nn];
 		CNRMATn[[cnr,Q73[5,qq]]] = FS[qq,nn];
 		CNRMATn[[cnr,Q73[9,qq]]] = $NLO*(-qsq)/(2*MN*$MChi)*(FT0[qq,nn]-FT1[qq,nn]);
+		CNRMATn[[cnr,Q73[23,qq]]]= 3./4*MN*F2q[qq,nn];
+		CNRMATn[[cnr,Q73[25]]]   = 3./4*MN*F2g[nn];
 		,{qq,LQRKS}];
 	CNRMATn[[cnr,Q73[1]]] = FG[nn];
 	(* --------------------------------------------------------------- *)
