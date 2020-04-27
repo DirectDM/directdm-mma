@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed the "DMEFT" basis to "6Flavor" for naming consistency
 ### Fixed
 - Updated values in `inputs.m` to PDG 2018
-- Removed unneeded call to `adms/dim5.m` in `Kernel/init.m` which was causing an error upon loading of `DirectDM`
+- Removed unneeded call to `adms/dim5.m` in `Kernel/init.m` which was causing an error upon loading of `DirectDM` (thanks to Diego Guadagnoli and Mraco Fedele for reporting it)
 - Minus-sign typos in anomalous dimensions for mixing of GG and GGdual operators into scalar and pseudoscalar quark opearators
 
 
