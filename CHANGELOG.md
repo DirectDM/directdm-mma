@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2020-04-27
+### Added
+- Matching to the twist-2 operators below the EW scale
+- The running and mixing of twist-2 operators below the EW scale and NR matching
+### Changed
+- Renamed the "DMEFT" basis to "6Flavor" for naming consistency
+### Fixed
+- Updated values in `inputs.m` to PDG 2018
+- Removed unneeded call to `adms/dim5.m` in `Kernel/init.m` which was causing an error upon loading of `DirectDM`
+- Minus-sign typos in anomalous dimensions for mixing of GG and GGdual operators into scalar and pseudoscalar quark opearators
+
+
 ## [1.1.0] - 2019-02-28
 ### Added
 - This version implements the matching at the EW scale in anticipation of version 2 of the code which will implement the RG running above the EW scale. The operator basis above the EW scale is defined in the following files:
