@@ -70,6 +70,7 @@ to zero";
 Q5::usage="Dimension 5 operators";
 Q6::usage="Dimension 6 operators";
 Q7::usage="Dimension 7 operators";
+Q8::usage="Dimension 8 operators";
 
 
 qsq::usage="\!\(\*OverscriptBox[\(q\), \(\[RightVector]\)]\)"
