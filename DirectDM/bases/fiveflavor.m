@@ -14,7 +14,14 @@ NF = 5;
 LEN   = Length[flavors[NF]];
 OP7fl = 6;
 ND5 = 2; ND6 = 4*LEN; ND7 = 4 + OP7fl*LEN;
-BasisDim["5Flavor"] = ND5+ND6+ND7+(NF+1); (* inc. (NF+1) twist-2 operators *)
+(* -------------------------------------------------------------------------- *
+ *  Add the dimension 8 operators required for weak mixing below the weak
+ *    scale [1801.04240]
+ * -------------------------------------------------------------------------- *)
+ND8 = 4*NF;
+
+
+BasisDim["5Flavor"] = ND5+ND6+ND7+(NF+1)+ND8; (* inc. (NF+1) twist-2 operators *)
 
 
 ResetBasis["5Flavor"];
@@ -23,6 +30,7 @@ ResetBasis["5Flavor"];
 Q55/:Q55 = Q5["5Flavor"];
 Q65/:Q65 = Q6["5Flavor"];
 Q75/:Q75 = Q7["5Flavor"];
+Q85/:Q85 = Q8["5Flavor"];
 (*T25/:T25 = T2["5Flavor"];*)
 
 
@@ -46,6 +54,9 @@ Do[
 ]
 	Q7/:Q7["5Flavor"][25] = ND5+ND6+ND7+NF+1;
 
+
+(* Clear[Q8] *)
+Do[Q8/:Q8["5Flavor"][i,j] = ND5+ND6+ND7+(NF+1)+1+NF*(i-1)+fnum[NF,j],{i,4},{j,quarks[[;;NF]]}]
 
 
 End[]
