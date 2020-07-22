@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2020-07-22
+### Fixed
+- Corrected a missing normalization factor of 1/(2m) in the matching to NR operators for scalar DM (thanks to Marco Fedele for reporting the bug)
+### Changed
+- Default DM properties moved from `functions.m` to end of `Kernel/init.m` and is now done via the public functions `SetDM...`
+- The dimension 7 basis below the EW scale (i.e., `NFlavor.m` with `N=3,4,5`) was expanded to include operators 11 to 22; in addition the bases were rewritten slightly to make debugging easier -- they now only differ in a few lines only
+- In the `matching/matchcnrScalar.m`, the DM mass was changed from `MX` to `$MChi` to conform with the current convention
+- The private functions `TranslateComplex`, `TranslateReal`, `ValidateCoeff`, and `CoeffsList` were updated to include the Rayleigh operators to keep up with the extended dim. 7 fermionic basis
+
+
 ## [1.2.0] - 2020-04-27
 ### Added
 - Matching to the twist-2 operators below the EW scale
@@ -13,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Renamed the "DMEFT" basis to "6Flavor" for naming consistency
 ### Fixed
 - Updated values in `inputs.m` to PDG 2018
-- Removed unneeded call to `adms/dim5.m` in `Kernel/init.m` which was causing an error upon loading of `DirectDM`
+- Removed unneeded call to `adms/dim5.m` in `Kernel/init.m` which was causing an error upon loading of `DirectDM` (thanks to Diego Guadagnoli and Mraco Fedele for reporting it)
 - Minus-sign typos in anomalous dimensions for mixing of GG and GGdual operators into scalar and pseudoscalar quark opearators
 
 

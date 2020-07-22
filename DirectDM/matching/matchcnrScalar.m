@@ -30,14 +30,14 @@ Block[{cnr}, cnr = 1;
   (*  Flavor dependent Wilson coefficients                         *)
 	(* -------------------------------------------------------------- *)
   Do[
-		(CNRMATpC[[cnr,#]] = 2*MX*CNRMATp[[cnr,#]]) &@ Q63[1,flav];
-		(CNRMATnC[[cnr,#]] = 2*MX*CNRMATn[[cnr,#]]) &@ Q63[1,flav];
-		(CNRMATpC[[cnr,#]] =      CNRMATp[[cnr,#]]) &@ Q73[5,flav];
-		(CNRMATnC[[cnr,#]] =      CNRMATn[[cnr,#]]) &@ Q73[5,flav];
+		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q63[1,flav];
+		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q63[1,flav];
+		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[5,flav];
+		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[5,flav];
   	,{flav,{"u","d","s"}}];
 	(* ------------------------------------------------------------ *)
-	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q73[1];
-	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q73[1];
+	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[1];
+	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[1];
 ]
 
 
@@ -46,8 +46,8 @@ Block[{cnr}, cnr = 1;
  * ------------------------------------------------------------------ *)
 Block[{cnr}, cnr = 7;
   Do[
-	   (CNRMATpC[[cnr,#]] = 2*MX*CNRMATp[[cnr,#]]) &@ Q63[3,flav];
-	   (CNRMATnC[[cnr,#]] = 2*MX*CNRMATn[[cnr,#]]) &@ Q63[3,flav];
+	   (CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q63[3,flav];
+	   (CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q63[3,flav];
     ,{flav,{"u","d","s"}}];
 ]
 
@@ -60,12 +60,12 @@ Block[{cnr,tmpp,tmpn}, cnr = 10;
   (*  Flavor dependent Wilson coefficients                            *)
 	(* ---------------------------------------------------------------- *)
   Do[
-		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q73[7,flav];
-		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q73[7,flav];
+		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[7,flav];
+		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[7,flav];
   	,{flav,{"u","d","s"}}];
 	(* ---------------------------------------------------------------- *)
-	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q73[3];
-	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q73[3];
+	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[3];
+	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[3];
 ]
 
 

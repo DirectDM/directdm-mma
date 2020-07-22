@@ -6,17 +6,6 @@ BeginPackage["DirectDM`"];
 Begin["`Private`"]
 
 
-(* By default, the DM is a Dirac fermion *)
-$DMType = "D";
-$IX = 0;
-$YX = 0;
-$DX = 2*$IX + 1;
-$JX = $IX*($IX+1);
-$MChi = 1*^2;
-(* By default, the DMEFT scale is 1 TeV *)
-$Lambda = 1*^3;
-
-
 dmtypes = {"D","M","C","R"};
 
 
@@ -114,8 +103,8 @@ TranslateComplex[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff},
 	tmp = # /. Head[#] -> List &@ coeff;
 	If[Length[tmp]==2, {number, flavor} = tmp, {number} = tmp];
 	trcoeff = Switch[number,
-		1, Q6[1,flavor], 3, Q7[5,flavor], 5, Q7[1],
-		2, Q6[3,flavor], 4, Q7[7,flavor], 6, Q7[3]];
+		1, Q6[1,flavor], 3, Q7[5,flavor], 5, Q7[1], 7, Q7[11],
+		2, Q6[3,flavor], 4, Q7[7,flavor], 6, Q7[3], 8, Q7[13]];
 	Return[{basis, trcoeff, value}];
 ]
 
@@ -132,8 +121,8 @@ TranslateReal[basis_,coeff_,value_] := Module[{number,flavor,tmp,trcoeff,dim},
  	 * ------------------------------------------------------------------------ *)
 	If[Length[tmp]==2, {number, flavor} = tmp, {number} = tmp];
 	trcoeff = Switch[number,
-		3, Q7[5,flavor], 5, Q7[1],
-		4, Q7[7,flavor], 6, Q7[3]];
+		3, Q7[5,flavor], 5, Q7[1], 7, Q7[11],
+		4, Q7[7,flavor], 6, Q7[3], 8, Q7[13]];
 	Return[{basis, trcoeff, value}];
 ]
 
@@ -176,11 +165,11 @@ ValidateCoeff[basis_, coeff_] := Module[{tmp01,tmp02,d,i,f,flag,
 		_, ChkOpDim = False;]
 	];
 	If[$DMType === "C", ChkOpInd = Switch[d,
-		6, MemberQ[Range[1,6],i],
+		6, MemberQ[Range[1,8],i],
 		_, ChkOpDim = False;]
 	];
 	If[$DMType === "R", ChkOpInd = Switch[d,
-		6, MemberQ[Range[3,6],i],
+		6, MemberQ[Range[3,8],i],
 		_, ChkOpDim = False;]
 	];
   (* ------------------------------------------------------------------------ *
@@ -240,15 +229,11 @@ CoeffsList[basis_] := If[StringMatchQ[basis,{"NR_p","NR_n"}], CoeffsListInt[basi
 		"C", 	Join[
 			Flatten@Table[GetCoeff[basis, Q6[i,f]],
 				{i,1,4}, {f, flavors[NumFlavors[basis]]}], 
-			Table[GetCoeff[basis, Q6[i]], {i,5,6}],
-			{0,0}
-		],
+			Table[GetCoeff[basis, Q6[i]], {i,5,8}]],
 		"R", 	Join[
 			Flatten@Table[GetCoeff[basis, Q6[i,f]],
 				{i,3,4}, {f, flavors[NumFlavors[basis]]}], 
-			Table[GetCoeff[basis, Q6[i]], {i,5,6}],
-			{0,0}
-		]
+			Table[GetCoeff[basis, Q6[i]], {i,5,8}]]
 	]
 ];
 
