@@ -6,14 +6,26 @@ BeginPackage["DirectDM`"];
 Begin["`Private`"]
 
 
-(* -------------------------------------------------------------------------- *
- *  N.B. Every basis definition should include the following function:
- *    BasisDim["basis"] = dimensionality of basis
- * -------------------------------------------------------------------------- *)
 NF = 4;
+$basis = StringJoin[ToString[NF],"Flavor"];
+
+
+Q54/:Q54 = Q5[$basis];
+Q64/:Q64 = Q6[$basis];
+Q74/:Q74 = Q7[$basis];
+Q84/:Q84 = Q8[$basis];
+
+
+(* -------------------------------------------------------------------------- *
+ *  NOTE: The code below this comment should be identical in
+ *    bases/threeflavor.m, bases/fourflavor.m, and bases/fiveflavor.m
+ * -------------------------------------------------------------------------- *)
 LEN   = Length[flavors[NF]];
-OP7fl = 6;
-ND5 = 2; ND6 = 4*LEN; ND7 = 4 + OP7fl*LEN;
+ND7a = 4;
+ND7b = 6*LEN;
+ND7c = 4;
+ND7d = 8*LEN;
+ND5 = 2; ND6 = 4*LEN; ND7 = ND7a + ND7b + ND7c + ND7d;
 (* -------------------------------------------------------------------------- *
  *  Add the dimension 8 operators required for weak mixing below the weak
  *    scale [1801.04240]
@@ -21,42 +33,43 @@ ND5 = 2; ND6 = 4*LEN; ND7 = 4 + OP7fl*LEN;
 ND8 = 4*NF;
 
 
-BasisDim["4Flavor"] = ND5+ND6+ND7+(NF+1)+ND8; (* inc. (NF+1) twist-2 operators *)
+(* -------------------------------------------------------------------------- *
+ *  N.B. Every basis definition should include the following function:
+ *    BasisDim["basis"] = dimensionality of basis
+ * -------------------------------------------------------------------------- *)
+BasisDim[$basis] = ND5+ND6+ND7+(LEN+1)+ND8; (* inc. ((NF+3)+1) twist-2 operators *)
 
 
-ResetBasis["4Flavor"];
+ResetBasis[$basis];
 
 
-Q54/:Q54 = Q5["4Flavor"];
-Q64/:Q64 = Q6["4Flavor"];
-Q74/:Q74 = Q7["4Flavor"];
-Q84/:Q84 = Q8["4Flavor"];
-(*T24/:T24 = T2["4Flavor"];*)
+(* Dimension 5 operators *)
+Q5/:Q5[$basis][1] = 1;
+Q5/:Q5[$basis][2] = 2;
 
 
-(* Clear[Q5] *)
-Q5/:Q5["4Flavor"][1] = 1;
-Q5/:Q5["4Flavor"][2] = 2;
+(* Dimension 6 operators *)
+Do[Q6/:Q6[$basis][i,j] = LEN*(i-1)+1+ND5+fnum[NF,j],{i,1,4},{j,flavors[NF]}]
 
 
-(* Clear[Q6] *)
-Do[Q6/:Q6["4Flavor"][i,j] = LEN*(i-1)+1+ND5+fnum[NF,j],{i,1,4},{j,flavors[NF]}]
+(* Dimension 7 operators *)
+Do[Q7/:Q7[$basis][i] 	= ND5+ND6+i,{i,1,4}]
 
+Do[Q7/:Q7[$basis][i+4,j] = ND5+ND6+ND7a+
+	LEN*(i-1)+1+fnum[NF,j],{i,6},{j,flavors[NF]}]
 
-(* Clear[Q7] *)
-Do[Q7/:Q7["4Flavor"][i] 	= ND5+ND6+i,{i,1,4}]
-Do[Q7/:Q7["4Flavor"][i+4,j] = ND5+ND6+4+1+LEN*(i-1)+fnum[NF,j],{i,OP7fl},{j,flavors[NF]}]
+Do[Q7/:Q7[$basis][i+4+6] = ND5+ND6+ND7a+ND7b+i,{i,1,4}]
 
-
-(*Do[T2/:T2["4Flavor"][i] = ND5+ND6+ND7+i,{i,1,NF+1}]*)
+Do[Q7/:Q7[$basis][i+4+6+4,j] = ND5+ND6+ND7a+ND7b+ND7c+
+	LEN*(i-1)+1+fnum[NF,j],{i,8},{j,flavors[NF]}]
 Do[
-	Q7/:Q7["4Flavor"][23,fl] = ND5+ND6+ND7+1+fnum[NF,fl],{fl,quarks[[;;NF]]}
+	Q7/:Q7[$basis][23,fl] = ND5+ND6+ND7+1+fnum[NF,fl],{fl,flavors[NF]}
 ]
-	Q7/:Q7["4Flavor"][25] = ND5+ND6+ND7+NF+1;
+	Q7/:Q7[$basis][25] = ND5+ND6+ND7+LEN+1;
 
 
-(* Clear[Q8] *)
-Do[Q8/:Q8["4Flavor"][i,j] = ND5+ND6+ND7+(NF+1)+1+NF*(i-1)+fnum[NF,j],{i,4},{j,quarks[[;;NF]]}]
+(* Dimension 8 operators *)
+Do[Q8/:Q8[$basis][i,j] = ND5+ND6+ND7+(NF+1)+1+NF*(i-1)+fnum[NF,j],{i,4},{j,quarks[[;;NF]]}]
 
 
 End[]

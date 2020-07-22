@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.2.1] - 2020-07-17
 ### Fixed
 - Corrected a missing normalization factor of 1/(2m) in the matching to NR operators for scalar DM (thanks to Marco Fedele for reporting the bug)
+### Changed
+- Default DM properties moved from `functions.m` to end of `Kernel/init.m` and is now done via the public functions `SetDM...`
+- The dimension 7 basis below the EW scale (i.e., `NFlavor.m` with `N=3,4,5`) was expanded to include operators 11 to 22; in addition the bases were rewritten slightly to make debugging easier -- they now only differ in a few lines only
+- In the `matching/matchcnrScalar.m`, the DM mass was changed from `MX` to `$MChi` to conform with the current convention
+- The private functions `TranslateComplex`, `TranslateReal`, `ValidateCoeff`, and `CoeffsList` were updated to include the Rayleigh operators to keep up with the extended dim. 7 fermionic basis
+
 
 ## [1.2.0] - 2020-04-27
 ### Added

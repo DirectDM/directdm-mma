@@ -32,12 +32,12 @@ Block[{cnr}, cnr = 1;
   Do[
 		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]) &@ Q63[1,flav];
 		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]) &@ Q63[1,flav];
-		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*MX)) &@ Q73[5,flav];
-		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*MX)) &@ Q73[5,flav];
+		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[5,flav];
+		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[5,flav];
   	,{flav,{"u","d","s"}}];
 	(* ------------------------------------------------------------ *)
-	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*MX)) &@ Q73[1];
-	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*MX)) &@ Q73[1];
+	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[1];
+	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[1];
 ]
 
 
@@ -60,12 +60,12 @@ Block[{cnr,tmpp,tmpn}, cnr = 10;
   (*  Flavor dependent Wilson coefficients                            *)
 	(* ---------------------------------------------------------------- *)
   Do[
-		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*MX)) &@ Q73[7,flav];
-		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*MX)) &@ Q73[7,flav];
+		(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[7,flav];
+		(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[7,flav];
   	,{flav,{"u","d","s"}}];
 	(* ---------------------------------------------------------------- *)
-	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*MX)) &@ Q73[3];
-	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*MX)) &@ Q73[3];
+	(CNRMATpC[[cnr,#]] = CNRMATp[[cnr,#]]/(2*$MChi)) &@ Q73[3];
+	(CNRMATnC[[cnr,#]] = CNRMATn[[cnr,#]]/(2*$MChi)) &@ Q73[3];
 ]
 
 
