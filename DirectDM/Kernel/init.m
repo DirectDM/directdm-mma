@@ -33,5 +33,10 @@ Get["DirectDM`matching`matchcnrScalar`"];
 Get["DirectDM`running`runnfsm`"];
 
 (* ------------------------------------------------------------------
- *  EW anomalous dimensions
+ *  Set default DM properties
  * ------------------------------------------------------------------ *)
+SetDMType["D"];       (* By default, the DM is a Dirac fermion,       *)
+SetDMMass[100];       (*  with 100 GeV mass,                          *)
+SetDMHypercharge[0];  (*  zero hypercharge,                           *)
+SetDMIsospin[0];      (*  and is an isospin singlet.                  *)
+SetScale[1000];       (* The default EFT scale is 1 TeV.              *)
