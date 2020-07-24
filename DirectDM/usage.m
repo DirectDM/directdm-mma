@@ -53,7 +53,7 @@ SetCoeff::usage="SetCoef[\"basis\",coefficient,value]"
 SetCoeffMstar::usage = "Set the coefficient in the basis of [1009.0008] -- see Appendix B of [1708.02678] for details."
 
 
-GetCoeff::usage="SetCoef[\"basis\",coefficient] returns the value of the \
+GetCoeff::usage="GetCoef[\"basis\",coefficient] returns the value of the \
 coefficient."
 
 
