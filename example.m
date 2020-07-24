@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (* ::Text::RGBColor[0.25098039215686274`, 0.25098039215686274`, 0.25098039215686274`]:: *)
-(*If DirectDM and this notebook are in the same directory (as is the case n the git repository), you can load the package directly as shown below. Otherwise, please set $DirectDMDirectory accordingly. Keep in mind that the path should be to the *parent* folder; i.e., should not include the DirectDM folder itself.*)
+(*If DirectDM directory and this notebook are in the same directory (as is the case in the git repository), you can load the package directly as shown below. Otherwise, please set $DirectDMDirectory accordingly. Keep in mind that the path should be to the *parent* folder; i.e., should not include the DirectDM folder itself.*)
 
 
 (*$DirectDMDirectory="<path/to/folder/containing/DirectDM>";*)
