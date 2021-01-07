@@ -127,7 +127,7 @@ MCat3GeVms   = 0.9851  (* [GeV] -- from lattice calculation in [1408.4169] *);
 (* -------------------------------------------------------------------------- * 
  *  Couplings at MZ
  * -------------------------------------------------------------------------- *)
-AlphaS["MZ"] = 0.1181  (* From 2016 PDG *);
+AlphaS["MZ"] = 0.1179  (* From 2020 PDG *);
 Alpha1["MZ"] = \[Alpha]emMZ/CW2MZ;
 Alpha2["MZ"] = \[Alpha]emMZ/SW2MZ;
 
