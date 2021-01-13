@@ -411,7 +411,24 @@ as2l[al0_, mu0_, muf_, nf_] :=
 
 AlphaS["MB"]   = as1l[AlphaS["MZ"]  , MZ, MBatMBms, 5];
 AlphaS["2GeV"] = as1l[AlphaS["MB"]  , MBatMBms, 2, 4];
+AlphaS["MC"]   = as1l[AlphaS["MB"]  , MBatMBms, MCatMCms, 4];
 
+(* -------------------------------------------------------------------------- * 
+ *  Quark masses at matching scales at all other scales are obtained by       *
+ *  one-loop running with the appropriate number of active flavors            *
+ * -------------------------------------------------------------------------- *)
+mq1l[flav_,mu0_,muf_,nf_] := MQ[flav,mu0]*(AlphaS[muf]/AlphaS[mu0])^(4/bet[0][nf]);
+
+MQ["u","MB"] = mq1l["u", "2GeV", "MB", 4];
+MQ["d","MB"] = mq1l["d", "2GeV", "MB", 4];
+MQ["s","MB"] = mq1l["s", "2GeV", "MB", 4];
+MQ["c","MB"] = mq1l["c", "MC"  , "MB", 4];
+
+MQ["u","MZ"] = mq1l["u", "MB", "MZ", 5];
+MQ["d","MZ"] = mq1l["d", "MB", "MZ", 5];
+MQ["s","MZ"] = mq1l["s", "MB", "MZ", 5];
+MQ["c","MZ"] = mq1l["c", "MB", "MZ", 5];
+MQ["b","MZ"] = mq1l["b", "MB", "MZ", 5];
 (* -------------------------------------------------------------------------- *
  *  The coefficients of the SU(2)_L and U(1)_Y beta functions.
  *  References: 
