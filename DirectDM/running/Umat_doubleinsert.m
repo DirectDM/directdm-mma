@@ -410,7 +410,38 @@ Table[(UmatNum/.\[Mu]->MBatMBms)[[PositionC6C8List[[j]]]],{j,Length[PositionC6C8
 UmatRes=UmatResInt[[13;;,;;20]];
 
 
+(* --------------------------------------------------------------------------
+* U matrix for leptons, taking as inputs C_lepton,i^(6)[MZ] and gives C_i^8[mu=2GeV]
+* -------------------------------------------------------------------------- *)
+LightqList={"u","d","s"};
+LeptonList={"e","mu","tau"};
+I3Fun["e"]=-1/2;I3Fun["mu"]=-1/2;I3Fun["tau"]=-1/2;
+QFun["e"]=-1;QFun["mu"]=-1;QFun["tau"]=-1;
+D62ql[q_,l_,"MZ init"]:=4 SW2MZ CW2MZ aFun[q] aFun[l];
+D63ql[l_,q_,"MZ init"]:=4 SW2MZ CW2MZ aFun[l] vFun[q];
+
+C6LepList[LR_]:={C61["e",LR],C62["e",LR],C63["e",LR],C64["e",LR],
+C61["mu",LR],C62["mu",LR],C63["mu",LR],C64["mu",LR],
+C61["tau",LR],C62["tau",LR],C63["tau",LR],C64["tau",LR]};
+
+C81qC63l=Sum[-4 \[Alpha]SFun[scale["2GeV"]]/(\[Pi] MQ[q,"2GeV"]^2) C81[q,L] ML[l]^2 Log[scale["2GeV"]/MZ]C63[l,R]D63ql[l,q,"MZ init"],
+{q,LightqList},{l,LeptonList}];
+C82qC64l=Sum[-4 \[Alpha]SFun[scale["2GeV"]]/(\[Pi] MQ[q,"2GeV"]^2) C82[q,L] ML[l]^2 Log[scale["2GeV"]/MZ]C64[l,R]D63ql[l,q,"MZ init"],
+{q,LightqList},{l,LeptonList}];
+C83qC63l=Sum[-4 \[Alpha]SFun[scale["2GeV"]]/(\[Pi] MQ[q,"2GeV"]^2) C83[q,L] ML[l]^2 Log[scale["2GeV"]/MZ]C63[l,R]D62ql[q,l,"MZ init"],
+{q,LightqList},{l,LeptonList}];
+C84qC64l=Sum[-4 \[Alpha]SFun[scale["2GeV"]]/(\[Pi] MQ[q,"2GeV"]^2) C84[q,L] ML[l]^2 Log[scale["2GeV"]/MZ]C64[l,R]D62ql[q,l,"MZ init"],
+{q,LightqList},{l,LeptonList}];
+
+UmatLepRes=Table[Coefficient[C81qC63l+C82qC64l+C83qC63l+C84qC64l,C8ListNf3[L][[i]]C6LepList[R][[j]]],
+{i,Length[C8ListNf3[L]]},{j,Length[C6LepList[R]]}];
+
+
+(* --------------------------------------------------------------------------
+* exporting U matrices for quarks and leptons
+* -------------------------------------------------------------------------- *)
 Export[NotebookDirectory[]<>"/Umat.dat",UmatRes];
+Export[NotebookDirectory[]<>"/UmatLep.dat",UmatLepRes];
 
 
 End[]
